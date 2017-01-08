@@ -12,10 +12,9 @@ import java.util.Map;
  * Created by blf2 on 17-1-8.
  */
 public class MongoOperator {
-    private static MongoDatabase mongoDatabase;
+    public void insertDocument(String databaseName,String collectionName,Document document){
+        MongoDatabase mongoDatabase = MongoDriver.getMongoDatabaseByName(Consts.MONGO_DATABASE_NAME);
+        MongoCollection<Document>collection = MongoDriver.getMongoCollectionByName(databaseName,collectionName);
 
-    public void insertDocument(Document document){
-        mongoDatabase = MongoDriver.getMongoDatabaseByName(Consts.MONGO_DATABASE_NAME);
-        MongoCollection<Document>collection = mongoDatabase.getCollection("");
     }
 }

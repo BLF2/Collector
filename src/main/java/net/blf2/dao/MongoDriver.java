@@ -1,8 +1,10 @@
 package net.blf2.dao;
 
 import com.mongodb.*;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import net.blf2.util.Consts;
+import org.bson.Document;
 
 /**
  * Created by blf2 on 17-1-8.
@@ -41,5 +43,8 @@ public class MongoDriver {
     }
     public static MongoDatabase getMongoDatabaseByName(String databaseName){
         return mongoClient.getDatabase(databaseName);
+    }
+    public static MongoCollection<Document> getMongoCollectionByName(String databaseName,String collectionName){
+        return mongoClient.getDatabase(databaseName).getCollection(collectionName);
     }
 }

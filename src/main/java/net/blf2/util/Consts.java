@@ -26,4 +26,5 @@ public class Consts {
     public static int MONGODB_PORT = properties.getProperty("MONGODB_PORT") != null ? Integer.parseInt(properties.getProperty("MONGODB_PORT")) : 27017;
     public static boolean SOCKET_KEEP_ALIVE = properties.getProperty("SOCKET_KEEP_ALIVE") != null ? Boolean.parseBoolean(properties.getProperty("SOCKET_KEEP_ALIVE")) : false;
     public static String MONGO_DATABASE_NAME = properties.getProperty("MONGO_DATABASE_NAME") != null ? properties.getProperty("MONGO_DATABASE_NAME") : "app";
+    public static String MONGO_COLLECTION_FOR_CLASS = properties.getProperty("MONGO_COLLECTION_FOR_CLASS") != null ? properties.getProperty("MONGO_COLLECTION_FOR_CLASS") : "class";
 }
