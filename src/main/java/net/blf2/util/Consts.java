@@ -27,4 +27,5 @@ public class Consts {
     public static boolean SOCKET_KEEP_ALIVE = properties.getProperty("SOCKET_KEEP_ALIVE") != null ? Boolean.parseBoolean(properties.getProperty("SOCKET_KEEP_ALIVE")) : false;
     public static String MONGO_DATABASE_NAME = properties.getProperty("MONGO_DATABASE_NAME") != null ? properties.getProperty("MONGO_DATABASE_NAME") : "app";
     public static String MONGO_COLLECTION_FOR_CLASS = properties.getProperty("MONGO_COLLECTION_FOR_CLASS") != null ? properties.getProperty("MONGO_COLLECTION_FOR_CLASS") : "class";
+    public static String MONGO_PRIMARY_KEY_NAME = properties.getProperty("MONGO_PRIMARY_KEY_NAME") != null ? properties.getProperty("MONGO_PRIMARY_KEY_NAME") : "objectId";
 }

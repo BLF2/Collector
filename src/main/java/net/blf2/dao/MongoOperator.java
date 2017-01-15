@@ -1,45 +1,81 @@
 package net.blf2.dao;
 
-import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.MongoCursor;
 import net.blf2.util.Consts;
 import net.blf2.util.Tools;
 import org.bson.Document;
-
-import java.lang.reflect.Field;
-import java.util.HashMap;
+import org.bson.types.ObjectId;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by blf2 on 17-1-8.
  */
 public class MongoOperator {
-    private <T>BasicDBObject javaBeanToMongoObject(T document) throws IllegalAccessException {
-        BasicDBObject basicDBObject = new BasicDBObject();
-        basicDBObject.putAll(Tools.encodeClass(document));
-        return basicDBObject;
-    }
-    public <T> boolean insertDocument(String databaseName,String collectionName,T document){
-        MongoCollection mongoCollection = MongoDriver.getMongoCollectionByName(databaseName,collectionName);
+    public boolean insertDocument(String databaseName,String collectionName,Map<String,Object>dataMap){
+        MongoCollection mongoCollection = MongoDriver.getMongoCollectionByName(databaseName, collectionName);
+        Document document = Tools.mapToDocument(dataMap);
         try {
-            mongoCollection.insertOne(javaBeanToMongoObject(document));
+            mongoCollection.insertOne(document);
         }catch (Exception ex){
             ex.printStackTrace();
             return false;
         }
         return true;
     }
-
-    public <T> boolean deleteDocument(String databaseName,String collectionName,T document){
+    public boolean deleteDocument(String databaseName,String collectionName,Map<String,Object>deleteDataMap){
         MongoCollection mongoCollection = MongoDriver.getMongoCollectionByName(databaseName,collectionName);
-        DeleteResult deleteResult;
+        Document  query = new Document();;
+        query = this.fillQueryConditions(deleteDataMap,query);
         try {
-            mongoCollection.findOneAndDelete(javaBeanToMongoObject(document));
+            mongoCollection.findOneAndDelete(query);
         }catch (Exception ex){
             ex.printStackTrace();
+            return false;
         }
+        return true;
+    }
+    public boolean updateDocument(String databaseName,String collectionName,Map<String,Object>updateDataMap){
+        MongoCollection mongoCollection = MongoDriver.getMongoCollectionByName(databaseName,collectionName);
+        Document query = new Document();
+        query = this.fillQueryConditions(updateDataMap,query);
+        try {
+            mongoCollection.findOneAndUpdate(query,Tools.mapToDocument(updateDataMap));
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    public List<Document> findDocuments(String databaseName,String collectionName,Map<String,Object>queryDataMap){
+        MongoCollection<Document> mongoCollection = MongoDriver.getMongoCollectionByName(databaseName,collectionName);
+        Document query = new Document();
+        query = this.fillQueryConditions(queryDataMap,query);
+        FindIterable<Document>findIterable;
+        try {
+            findIterable = mongoCollection.find(query);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+        MongoCursor<Document> cursor = findIterable.iterator();
+        List<Document>documentList = new LinkedList<Document>();
+        while (cursor.hasNext()){
+            Document document = cursor.next();
+            documentList.add(document);
+        }
+        return documentList;
     }
 
+    private Document fillQueryConditions(Map<String,Object>dataMap,Document query){
+        if(dataMap.containsKey(Consts.MONGO_PRIMARY_KEY_NAME)){
+            ObjectId objectId = new ObjectId((String)dataMap.get(Consts.MONGO_PRIMARY_KEY_NAME));
+            query.put("_id",objectId);
+            dataMap.remove(Consts.MONGO_PRIMARY_KEY_NAME);
+        }
+        return query;
+    }
 }

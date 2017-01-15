@@ -1,5 +1,9 @@
 package net.blf2.util;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import org.bson.Document;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,5 +20,37 @@ public class Tools {
             fieldToValueMap.put(field.getName(),field.get(classInstance));
         }
         return fieldToValueMap;
+    }
+    public static <T> T decodeClass(Class<T> tClass,Map<String,Object>classFieldsMap){
+        Field[] fields = tClass.getDeclaredFields();
+        T t;
+        try {
+            t = tClass.newInstance();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+        for(Field field : fields){
+            field.setAccessible(true);
+            try {
+                field.set(t,classFieldsMap.get(field.getName()));
+            }catch (Exception ex){
+                ex.printStackTrace();
+                return null;
+            }
+        }
+        return t;
+    }
+    public static <T>Document javaBeanToMongoObject(T document) throws IllegalAccessException {
+        Document newDocument = new Document();
+        newDocument.putAll(Tools.encodeClass(document));
+        return newDocument;
+    }
+    public static Document mapToDocument(Map<String,Object>keyValueMap){
+        Document document = new Document();
+        for(Map.Entry<String,Object> entry : keyValueMap.entrySet()){
+            document.put(entry.getKey(),entry.getValue());
+        }
+        return document;
     }
 }
