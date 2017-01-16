@@ -2,8 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.blf2.dao.IUserDao">
 
-    <select id="" parameterType="String"
-            resultType="net.blf2.entity.UserInfo">
-        select * from UserInfo where userId=#{userId}
+    <select id="queryUserInfoById" parameterType="String" resultMap="UserInfoResultMap">
+        SELECT * FROM UserInfo WHENEVER userId=#{userId}
     </select>
+    <select id="queryUserInfoAll" resultMap="UserInfoResultMap">
+        SELECT * FROM UserInfo
+    </select>
+
+    <insert id="insertUserInfo" parameterType="net.blf2.entity.UserInfo" flushCache="true"
+            statementType="PREPARED" timeout="20000">
+        INSERT INTO UserInfo VALUES ()
+    </insert>
+
+    <resultMap id="UserInfoResultMap" type="net.blf2.entity.UserInfo">
+        <id property="userId" column="userId"/>
+        <result property="userNum" column="userNum"/>
+        <result property="userPswd" column="userPswd"/>
+        <result property="userPhone" column="userPhone"/>
+        <result property="userNote" column="userNote"/>
+        <association property="net.blf2.entity.UserRoleInfo" column="userRoleId" select=""
+                     javaType="net.blf2.entity.UserRoleInfo"/>
+    </resultMap>
 </mapper>
