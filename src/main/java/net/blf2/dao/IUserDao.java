@@ -9,9 +9,9 @@ import java.util.List;
  * 用户操作接口
  */
 public interface IUserDao {
-    public UserInfo queryUserInfoById(String userId);
-    public void insertUserInfo(UserInfo userInfo);
-    public void deleteUserInfoById(String userId);
-    public void updateUserInfo(UserInfo userInfo);
-    public List<UserInfo> queryUserInfoAll();
+    UserInfo queryUserInfoById(String userId);
+    void insertUserInfo(UserInfo userInfo);
+    void deleteUserInfoById(String userId);
+    void updateUserInfo(UserInfo userInfo);
+    List<UserInfo> queryUserInfoAll();
 }
