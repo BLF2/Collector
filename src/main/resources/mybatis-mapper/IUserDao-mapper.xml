@@ -3,15 +3,16 @@
 <mapper namespace="net.blf2.dao.IUserDao">
 
     <sql id="UserInfoColumns">
-        userId,userNum,userPswd,userPhone,userGrade,userRole,userNote
+        UserInfo.userId,UserInfo.userNum,UserInfo.userPswd,UserInfo.userPhone,UserInfo.userGrade,UserInfo.userNote
     </sql>
 
     <sql id="UserRoleInfoColumns">
-        roleId,roleName,roleRule,roleNote
+        UserRoleInfo.roleId,UserRoleInfo.roleName,UserRoleInfo.roleRule,UserRoleInfo.roleNote
     </sql>
 
     <sql id="UserInfoJoinUserRoleInfo">
-        UserInfo
+        FROM
+          UserInfo
         LEFT OUTER JOIN
           UserRoleInfo
         ON
@@ -21,19 +22,18 @@
     <sql id="insertUserInfoColumns">
         userId,userNum,userPswd,userPhone,userGrade,userRoleId,userNote
     </sql>
+
     <select id="queryUserInfoById" parameterType="String" resultMap="UserInfoResultMap">
         SELECT
           <include refid="UserInfoColumns" />,
           <include refid="UserRoleInfoColumns" />
-        FROM
           <include refid="UserInfoJoinUserRoleInfo" />
-        WHENEVER
+        WHERE
           UserInfo.userId = #{userId}
     </select>
     <select id="queryUserInfoAll" resultMap="UserInfoResultMap">
         SELECT
-          <include refid="UserInfoColumns" />,
-        FROM
+          <include refid="UserInfoColumns" />
           <include refid="UserInfoJoinUserRoleInfo" />
     </select>
 
@@ -44,7 +44,7 @@
           <include refid="insertUserInfoColumns" />
           )
         VALUES (
-        #{userId},#{userNum},#{userPswd},#{userPhone},#{userGrade},#{userRole.userRoleId},#{userNote}
+        #{userId},#{userNum},#{userPswd},#{userPhone},#{userGrade},#{userRole.roleId},#{userNote}
         )
     </insert>
 
@@ -52,9 +52,24 @@
             statementType="PREPARED" timeout="20000">
         UPDATE
           UserInfo
-        WHENEVER
-          
+        SET
+          userNum = #{userNum},
+          userPswd = #{userPswd},
+          userPhone = #{userPhone},
+          userGrade = #{userGrade},
+          userRoleId = #{userRole.roleId},
+          userNote = #{userNote}
+        WHERE
+          UserInfo.userId=#{userId}
     </update>
+
+    <delete id="deleteUserInfoById" parameterType="String" statementType="PREPARED" timeout="20000"
+            flushCache="true">
+        DELETE FROM
+          UserInfo
+        WHERE
+          UserInfo.userId = #{userId}
+    </delete>
 
     <resultMap id="UserInfoResultMap" type="net.blf2.entity.UserInfo">
         <id property="userId" column="userId"/>
