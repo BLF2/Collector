@@ -1,3 +1,7 @@
+CREATE DATABASE collector DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+use collector;
+
 create table UserInfo(
 userId varchar(100) primary key,
 userNum varchar(20) not null,
