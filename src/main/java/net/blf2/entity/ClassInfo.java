@@ -1,5 +1,7 @@
 package net.blf2.entity;
 
+import java.util.List;
+
 /**
  * Created by blf2 on 17-1-8.
  * 班级信息
