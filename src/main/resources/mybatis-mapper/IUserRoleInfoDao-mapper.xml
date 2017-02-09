@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.blf2.dao.IUserRoleDao">
+    <resultMap id="UserRoleInfoResultMap" type="net.blf2.entity.UserRoleInfo">
+        <id property="roleId" column="roleId" />
+        <result property="roleName" column="roleName"/>
+        <result property="roleRule" column="roleRule"/>
+        <result property="roleNote" column="roleNote"/>
+    </resultMap>
+
+    <sql id="UserRoleInfoColumns">
+        roleId,roleName,roleRule,roleNote
+    </sql>
+
+    <select id="queryUserRoleInfoByRoleId" parameterType="String" resultMap="UserRoleInfoResultMap">
+        SELECT
+          <include refid="UserRoleInfoColumns" />
+        FROM
+          UserRoleInfo
+        WHERE
+          roleId = #{roleId}
+    </select>
+
+    <insert id="insertUserRoleInfo" flushCache="true" parameterType="net.blf2.entity.UserRoleInfo"
+            statementType="PREPARED" timeout="20000">
+        INSERT INTO
+          UserRoleInfo(
+          <include refid="UserRoleInfoColumns" />
+          )VALUES (
+        #{roleId},#{roleName},#{roleRule},#{roleNote}
+        );
+    </insert>
+
+    <update id="updateUserRoleInfo" statementType="PREPARED" flushCache="true"
+            parameterType="net.blf2.entity.UserRoleInfo" timeout="20000">
+        UPDATE
+          UserRoleInfo
+        <set>
+            <if test="roleName != null">
+                roleName = #{roleName},
+            </if>
+            <if test="roleRule != null">
+                roleRule = #{roleRule},
+            </if>
+            <if test="roleNote != null">
+                roleNote = #{roleNote}
+            </if>
+        </set>
+        WHERE
+          roleId = #{roleId}
+    </update>
+
+    <delete id="deleteUserRoleInfoByRoleId" parameterType="net.blf2.entity.UserRoleInfo" flushCache="true"
+            statementType="PREPARED" timeout="20000">
+        DELETE FROM
+          UserRoleInfo
+        WHERE
+          roleId = #{roleId}
+    </delete>
+
+    <select id="queryUserRoleInfo" resultMap="UserRoleInfoResultMap">
+        SELECT
+          <include refid="UserRoleInfoColumns" />
+        FROM
+          UserRoleInfo
+    </select>
+
+</mapper>
