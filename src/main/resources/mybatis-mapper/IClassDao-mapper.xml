@@ -72,8 +72,9 @@
         INSERT INTO ClassInfo(
           <include refid="insertClassInfoColumns" />
         )
-        VALUES
+        VALUES(
         #{classId},#{majorName},#{classGrade},#{classNum},#{monitorInfo.userId},#{classNote}
+        )
     </insert>
 
     <update id="updateClassInfo" statementType="PREPARED" flushCache="true" timeout="20000">
