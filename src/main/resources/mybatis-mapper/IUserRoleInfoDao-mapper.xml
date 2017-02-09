@@ -58,7 +58,7 @@
           roleId = #{roleId}
     </delete>
 
-    <select id="queryUserRoleInfo" resultMap="UserRoleInfoResultMap">
+    <select id="queryUserRoleInfoAll" resultMap="UserRoleInfoResultMap">
         SELECT
           <include refid="UserRoleInfoColumns" />
         FROM

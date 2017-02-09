@@ -12,5 +12,5 @@ public interface IUserRoleDao {
     void insertUserRoleInfo(UserRoleInfo userRoleInfo);
     void updateUserRoleInfo(UserRoleInfo userRoleInfo);
     void deleteUserRoleInfoByRoleId(String roleId);
-    List<UserRoleInfo> queryUserRoleInfo();
+    List<UserRoleInfo> queryUserRoleInfoAll();
 }
