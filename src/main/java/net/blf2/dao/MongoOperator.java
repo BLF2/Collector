@@ -6,7 +6,6 @@ import com.mongodb.client.MongoCursor;
 import net.blf2.util.Consts;
 import net.blf2.util.Tools;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -42,8 +41,9 @@ public class MongoOperator {
         MongoCollection mongoCollection = MongoDriver.getMongoCollectionByName(databaseName,collectionName);
         Document query = new Document();
         query = MongoOperator.fillQueryConditions(updateDataMap, query);
+        Document updateDocument = Tools.mapToDocument(updateDataMap);
         try {
-            mongoCollection.findOneAndUpdate(query,Tools.mapToDocument(updateDataMap));
+            mongoCollection.replaceOne(query, updateDocument);
         }catch (Exception ex){
             ex.printStackTrace();
             return false;
@@ -68,13 +68,50 @@ public class MongoOperator {
         while (cursor.hasNext()){
             documentList.add(cursor.next());
         }
-        return documentList.get(0);
+        return documentList.size() > 0 ? documentList.get(0) : null;
     }
 
+    public static List<Document> findAllDocuments(String databaseName,String collectionName){
+        MongoCollection<Document> mongoCollection = MongoDriver.getMongoCollectionByName(databaseName,collectionName);
+        FindIterable<Document>findIterable;
+        try {
+            findIterable = mongoCollection.find();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+        MongoCursor<Document> cursor = findIterable.iterator();
+        if(cursor == null)
+            return null;
+        List<Document>documentList = new LinkedList<Document>();
+        while (cursor.hasNext()){
+            documentList.add(cursor.next());
+        }
+        return documentList;
+    }
+    public static List<Document> findAllDocumentsByFilter(String databaseName,String collectionName,Map<String,Object>queryDataMap){
+        MongoCollection<Document> mongoCollection = MongoDriver.getMongoCollectionByName(databaseName,collectionName);
+        Document query = new Document();
+        query = Tools.mapToDocument(queryDataMap);
+        FindIterable<Document>findIterable;
+        try {
+            findIterable = mongoCollection.find(query);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+        MongoCursor<Document> cursor = findIterable.iterator();
+        if(cursor == null)
+            return null;
+        List<Document>documentList = new LinkedList<Document>();
+        while (cursor.hasNext()){
+            documentList.add(cursor.next());
+        }
+        return documentList;
+    }
     public static Document fillQueryConditions(Map<String,Object>dataMap,Document query){
         if(dataMap.containsKey(Consts.MONGO_PRIMARY_KEY_NAME)){
-            ObjectId objectId = new ObjectId((String)dataMap.get(Consts.MONGO_PRIMARY_KEY_NAME));
-            query.put("_id",objectId);
+            query.put("_id",dataMap.get(Consts.MONGO_PRIMARY_KEY_NAME));
             dataMap.remove(Consts.MONGO_PRIMARY_KEY_NAME);
         }
         return query;

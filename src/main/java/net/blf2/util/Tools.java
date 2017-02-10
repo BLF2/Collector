@@ -3,6 +3,7 @@ package net.blf2.util;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -48,8 +49,16 @@ public class Tools {
     }
     public static Document mapToDocument(Map<String,Object>keyValueMap){
         Document document = new Document();
+        boolean flag = false;
         for(Map.Entry<String,Object> entry : keyValueMap.entrySet()){
-            document.put(entry.getKey(),entry.getValue());
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if(!flag && key.equals(Consts.MONGO_PRIMARY_KEY_NAME)){
+                document.put("_id",value);
+                flag = true;
+                continue;
+            }
+            document.put(key,value);
         }
         return document;
     }
