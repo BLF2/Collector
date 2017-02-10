@@ -1,5 +1,7 @@
 package net.blf2.util;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
@@ -12,7 +14,7 @@ public class Consts {
     static{
         properties = new Properties();
         try {
-            properties.load(Object.class.getResourceAsStream("consts.properties"));
+            properties.load(Consts.class.getClassLoader().getResourceAsStream("consts.properties"));
         }catch (Exception ex) {
             ex.printStackTrace();
         }
