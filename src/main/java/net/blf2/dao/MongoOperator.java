@@ -62,10 +62,11 @@ public class MongoOperator {
             return null;
         }
         MongoCursor<Document> cursor = findIterable.iterator();
+        if(cursor == null)
+            return null;
         List<Document>documentList = new LinkedList<Document>();
         while (cursor.hasNext()){
-            Document document = cursor.next();
-            documentList.add(document);
+            documentList.add(cursor.next());
         }
         return documentList.get(0);
     }
