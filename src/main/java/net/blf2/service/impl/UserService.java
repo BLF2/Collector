@@ -3,7 +3,6 @@ package net.blf2.service.impl;
 import net.blf2.dao.IUserDao;
 import net.blf2.entity.UserInfo;
 import net.blf2.service.IUserService;
-import org.apache.ibatis.javassist.bytecode.stackmap.BasicBlock;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
