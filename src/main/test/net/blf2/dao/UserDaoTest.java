@@ -46,7 +46,7 @@ public class UserDaoTest {
         insertUserInfo.setUserRole(userRoleInfo);
         insertUserInfo.setUserPswd("mxh19940822");
         insertUserInfo.setUserPhone("15800499264");
-        insertUserInfo.setUserNum("13110572081");
+        insertUserInfo.setUserNum("13110572082");
         insertUserInfo.setUserGrade("2013");
     }
 
@@ -104,6 +104,22 @@ public class UserDaoTest {
             userDao.deleteUserInfoById(userIdForDelete);
             userInfoForRe = userDao.queryUserInfoById(userIdForDelete);
             Assert.assertNull(userInfoForRe);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            Assert.assertTrue(false);
+        }
+        Assert.assertTrue(true);
+    }
+    @Test
+    public void testQueryUserInfoByUserNum(){
+        try {
+            userDao.insertUserInfo(insertUserInfo);
+            UserInfo findUserInfo = userDao.queryUserInfoByUserNum(insertUserInfo.getUserNum());
+            System.out.println(findUserInfo.getUserId()+" "+findUserInfo.getUserNum());
+            Assert.assertTrue(findUserInfo != null);
+            Assert.assertEquals(findUserInfo.getUserNum(),insertUserInfo.getUserNum());
+            Assert.assertTrue(userDao.queryUserIdByUserNum(insertUserInfo.getUserNum()) != null);
+            Assert.assertTrue(userDao.queryUserIdByUserPhone(insertUserInfo.getUserPhone()) != null);
         }catch (Exception ex){
             ex.printStackTrace();
             Assert.assertTrue(false);

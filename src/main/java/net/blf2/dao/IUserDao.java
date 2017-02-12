@@ -14,4 +14,7 @@ public interface IUserDao {
     void deleteUserInfoById(String userId);
     void updateUserInfo(UserInfo userInfo);
     List<UserInfo> queryUserInfoAll();
+    UserInfo queryUserInfoByUserNum(String userNum);
+    String queryUserIdByUserPhone(String userPhone);
+    String queryUserIdByUserNum(String userNum);
 }
