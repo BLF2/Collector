@@ -71,12 +71,15 @@ public class ClassDaoTest {
             classDao.insertClassInfo(classInfo);
             ClassInfo findClassInfo = classDao.queryClassInfoByClassId(classId);
             Assert.assertTrue(findClassInfo != null);
-            Assert.assertEquals(classInfo.getClassId(),findClassInfo.getClassId());
+            Assert.assertEquals(classInfo.getClassId(), findClassInfo.getClassId());
             findClassInfo.setClassNum(updClassNum);
             classDao.updateClassInfo(findClassInfo);
             findClassInfo = classDao.queryClassInfoByClassId(findClassInfo.getClassId());
-            Assert.assertEquals(findClassInfo.getClassNum(),updClassNum);
+            Assert.assertEquals(findClassInfo.getClassNum(), updClassNum);
             ClassInfo findAll = new ClassInfo();
+            userInfo.setUserId(UUID.randomUUID().toString());
+            userInfo.setUserPhone("15800499265");
+            userInfo.setUserNum("13110572082");
             findAll.setClassId(UUID.randomUUID().toString());
             findAll.setClassGrade("2014");
             findAll.setClassNum("04");
@@ -87,6 +90,19 @@ public class ClassDaoTest {
             for(ClassInfo iClassInfo : classInfos){
                 System.out.println(iClassInfo.getClassId()+" " + iClassInfo.getClassGrade()
                         + iClassInfo.getClassNum()+" "+iClassInfo.getMajorName());
+            }
+            String mIdClassId = classDao.queryClassIdByMonitorId(findAll.getMonitorInfo().getUserId());
+            Assert.assertTrue(mIdClassId != null);
+            Assert.assertEquals(mIdClassId, findAll.getClassId());
+            String majorGradeNum = classDao.queryClassIdByClassMajorNameGradeNum("计算机科学与技术", "2014", "04");
+            Assert.assertTrue(majorGradeNum != null);
+            Assert.assertEquals(majorGradeNum, findAll.getClassId());
+            ClassInfo fClassInfo = classDao.queryClassInfoByMonitorId(findAll.getMonitorInfo().getUserId());
+            Assert.assertTrue(fClassInfo != null);
+            Assert.assertEquals(fClassInfo.getClassId(), findAll.getClassId());
+            List<String> majorNameGradeNums = classDao.queryMajorNameGradeNums();
+            for(String str : majorNameGradeNums){
+                System.out.println(str);
             }
             for(ClassInfo iClassInfo : classInfos){
                classDao.deleteClassInfoByClassId(iClassInfo.getClassId());

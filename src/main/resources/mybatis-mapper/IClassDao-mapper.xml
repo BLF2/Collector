@@ -68,6 +68,48 @@
         <include refid="JoinIn" />
     </select>
 
+    <select id="queryClassIdByMonitorId" statementType="PREPARED" parameterType="String"
+            resultType="String">
+        SELECT
+          ClassInfo.classId
+        FROM
+          ClassInfo
+        WHERE
+          ClassInfo.monitorId = #{monitorId}
+    </select>
+
+    <select id="queryClassIdByClassMajorNameGradeNum" statementType="PREPARED" parameterType="String"
+            resultType="String">
+        SELECT
+          ClassInfo.classId
+        FROM
+          ClassInfo
+        WHERE
+          ClassInfo.majorName = #{majorName}
+        AND
+          ClassInfo.classGrade = #{classGrade}
+        AND
+          ClassInfo.classNum = #{classNum}
+    </select>
+
+    <select id="queryClassInfoByMonitorId" statementType="PREPARED" parameterType="String"
+            resultMap="ClassInfoResultMap">
+        SELECT
+          <include refid="ClassInfoColumns"/>,
+          <include refid="UserInfoColumns" />,
+          <include refid="UserRoleInfoColumns" />
+          <include refid="JoinIn" />
+        WHERE
+          ClassInfo.monitorId = #{monitorId}
+    </select>
+
+    <select id="queryMajorNameGradeNums" statementType="PREPARED" parameterType="String"
+            resultType="String">
+        SELECT CONCAT(ClassInfo.majorName,ClassInfo.classGrade,ClassInfo.classNum)
+        FROM
+          ClassInfo
+    </select>
+
     <insert id="insertClassInfo">
         INSERT INTO ClassInfo(
           <include refid="insertClassInfoColumns" />
