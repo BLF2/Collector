@@ -8,9 +8,12 @@ import java.util.List;
  * Created by blf2 on 17-2-4.
  */
 public interface IUserService {
-    UserInfo queryUserInfoByUserId(String userId);
-    List<UserInfo> queryUserInfoAll();
-    boolean insertUserInfo(UserInfo userInfo);
+    UserInfo findUserInfoByUserId(String userId);
+    List<UserInfo> findAllUserInfos();
+    boolean registerUserInfo(UserInfo userInfo);
     boolean updateUserInfo(UserInfo userInfo);
     boolean deleteUserInfoByUserId(String userId);
+    boolean checkLoginInfo(String userNum,String userPswd);
+    boolean checkUserPhoneHasExist(String userPhone);
+    boolean checkUserNumHasExist(String userNum);
 }
