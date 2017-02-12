@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.AssertThrows;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -34,6 +35,8 @@ public class UserDaoTest {
     private UserRoleInfo userRoleInfo;
     private UUID userId ;
     private UUID userRoleId;
+    private UserInfo insertUserInfo2;
+    private String userGrade = "软件201303";
 
     @Before
     public void initResourceForTest(){
@@ -47,83 +50,51 @@ public class UserDaoTest {
         insertUserInfo.setUserPswd("mxh19940822");
         insertUserInfo.setUserPhone("15800499264");
         insertUserInfo.setUserNum("13110572082");
-        insertUserInfo.setUserGrade("2013");
-    }
+        insertUserInfo.setUserGrade(userGrade);
 
+        insertUserInfo2 = new UserInfo();
+        insertUserInfo2.setUserId(UUID.randomUUID().toString());
+        insertUserInfo2.setUserRole(userRoleInfo);
+        insertUserInfo2.setUserPswd("mxh19940823");
+        insertUserInfo2.setUserPhone("15800499266");
+        insertUserInfo2.setUserNum("13110572080");
+        insertUserInfo2.setUserGrade(userGrade);
+    }
     @Test
-    public void testInsertUserInfo(){
+    public void testUserDao(){
         try {
             userDao.insertUserInfo(insertUserInfo);
-        }catch (Exception ex){
-            ex.printStackTrace();
-            Assert.assertTrue(false);
-        }
-        Assert.assertTrue(true);
-    }
-
-    @Test
-    public void testQueryUserInfoById(){
-        UserInfo queryUserInfo = null;
-        try {
-           queryUserInfo =  userDao.queryUserInfoById(userId.toString());
-        }catch (Exception ex){
-            ex.printStackTrace();
-            Assert.assertTrue(false);
-        }
-        Assert.assertTrue(insertUserInfo.equals(queryUserInfo.equals(insertUserInfo)));
-    }
-    @Test
-    public void testQueryUserInfoAll(){
-        List<UserInfo>userInfoList = null;
-        try {
-            userInfoList = userDao.queryUserInfoAll();
-        }catch (Exception ex){
-            ex.printStackTrace();
-            Assert.assertTrue(false);
-        }
-        if(userInfoList != null){
-            for (UserInfo userInfox : userInfoList){
-                System.out.println(userInfox.getUserId());
-            }
-        }
-        Assert.assertTrue(userInfoList != null);
-    }
-    @Test
-    public void testDeleteUserInfoById(){
-        String userIdForDelete = UUID.randomUUID().toString();
-        UserInfo userInfoForDelete = new UserInfo();
-        userInfoForDelete.setUserId(userIdForDelete);
-        userInfoForDelete.setUserRole(userRoleInfo);
-        userInfoForDelete.setUserNum("13110572082");
-        userInfoForDelete.setUserGrade("2013");
-        try {
-            userDao.insertUserInfo(userInfoForDelete);
-            UserInfo userInfoForRe = userDao.queryUserInfoById(userIdForDelete);
-            Assert.assertNotNull(userInfoForRe);
-            Assert.assertTrue(userInfoForDelete.getUserId().equals(userInfoForRe.getUserId()));
-            userDao.deleteUserInfoById(userIdForDelete);
-            userInfoForRe = userDao.queryUserInfoById(userIdForDelete);
-            Assert.assertNull(userInfoForRe);
-        }catch (Exception ex){
-            ex.printStackTrace();
-            Assert.assertTrue(false);
-        }
-        Assert.assertTrue(true);
-    }
-    @Test
-    public void testQueryUserInfoByUserNum(){
-        try {
-            userDao.insertUserInfo(insertUserInfo);
-            UserInfo findUserInfo = userDao.queryUserInfoByUserNum(insertUserInfo.getUserNum());
-            System.out.println(findUserInfo.getUserId()+" "+findUserInfo.getUserNum());
+            UserInfo findUserInfo = userDao.queryUserInfoById(insertUserInfo.getUserId());
             Assert.assertTrue(findUserInfo != null);
-            Assert.assertEquals(findUserInfo.getUserNum(),insertUserInfo.getUserNum());
-            Assert.assertTrue(userDao.queryUserIdByUserNum(insertUserInfo.getUserNum()) != null);
-            Assert.assertTrue(userDao.queryUserIdByUserPhone(insertUserInfo.getUserPhone()) != null);
+            Assert.assertEquals(findUserInfo.getUserId(), insertUserInfo.getUserId());
+            String updUserPhone = "15800499265";
+            insertUserInfo.setUserPhone(updUserPhone);
+            userDao.updateUserInfo(insertUserInfo);
+            findUserInfo = userDao.queryUserInfoById(insertUserInfo.getUserId());
+            Assert.assertTrue(findUserInfo != null);
+            Assert.assertEquals(findUserInfo.getUserPhone(), updUserPhone);
+            String userNumId = userDao.queryUserIdByUserNum(insertUserInfo.getUserNum());
+            Assert.assertTrue(userNumId != null);
+            Assert.assertEquals(userNumId, insertUserInfo.getUserId());
+            String userPhoneId = userDao.queryUserIdByUserPhone(updUserPhone);
+            Assert.assertTrue(userPhoneId != null);
+            Assert.assertEquals(userPhoneId,insertUserInfo.getUserId());
+            userDao.insertUserInfo(insertUserInfo2);
+            List<UserInfo>userInfoAll = userDao.queryUserInfoAll();
+            for(UserInfo iUserInfo : userInfoAll){
+                System.out.println(iUserInfo.getUserId()+" "+iUserInfo.getUserNum()+" "+iUserInfo.getUserPhone());
+            }
+            System.out.println("---------------->test query by grade");
+            List<UserInfo>userInfosByGrade = userDao.queryUserInfoByUserGrade(userGrade);
+            for(UserInfo iUserInfo : userInfosByGrade){
+                System.out.println(iUserInfo.getUserId()+" "+iUserInfo.getUserNum()+" "+iUserInfo.getUserPhone());
+            }
+            for(UserInfo iUserInfo : userInfosByGrade){
+                userDao.deleteUserInfoById(iUserInfo.getUserId());
+            }
         }catch (Exception ex){
             ex.printStackTrace();
             Assert.assertTrue(false);
         }
-        Assert.assertTrue(true);
     }
 }
