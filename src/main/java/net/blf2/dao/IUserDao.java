@@ -17,4 +17,5 @@ public interface IUserDao {
     UserInfo queryUserInfoByUserNum(String userNum);
     String queryUserIdByUserPhone(String userPhone);
     String queryUserIdByUserNum(String userNum);
+    List<UserInfo> queryUserInfoByUserGrade(String userGrade);//根据专业班级筛选某个班所有的人
 }
