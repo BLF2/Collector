@@ -29,6 +29,7 @@
   <version>1.0-SNAPSHOT</version>
 
   <build>
+    <!--
     <plugins>
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
@@ -45,7 +46,7 @@
           <contextPath>/</contextPath>
         </configuration>
       </plugin>
-      <!--
+
       <plugin>
         <groupId>org.mybatis.generator</groupId>
         <artifactId>mybatis-generator-maven-plugin</artifactId>
@@ -55,8 +56,9 @@
           <overwrite>true</overwrite>
         </configuration>
       </plugin>
-      -->
+
     </plugins>
+    -->
     <finalName>Collector</finalName>
   </build>
 
@@ -251,6 +253,24 @@
       <artifactId>mongo-java-driver</artifactId>
       <version>3.0.3</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.7</version>
+    </dependency>
+
+
   </dependencies>
+
+
 
 </project>
