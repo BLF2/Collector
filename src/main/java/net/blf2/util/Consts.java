@@ -30,4 +30,5 @@ public class Consts {
     public static String MONGO_DATABASE_NAME = properties.getProperty("MONGO_DATABASE_NAME") != null ? properties.getProperty("MONGO_DATABASE_NAME") : "app";
     public static String MONGO_COLLECTION_FOR_CLASS = properties.getProperty("MONGO_COLLECTION_FOR_CLASS") != null ? properties.getProperty("MONGO_COLLECTION_FOR_CLASS") : "app_data";
     public static String MONGO_PRIMARY_KEY_NAME = properties.getProperty("MONGO_PRIMARY_KEY_NAME") != null ? properties.getProperty("MONGO_PRIMARY_KEY_NAME") : "objectId";
+    public static String USER_INFO_NAME = properties.getProperty("USER_INFO_NAME") != null ? properties.getProperty("USER_INFO_NAME") : "UserInfo";
 }
