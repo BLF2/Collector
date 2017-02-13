@@ -11,6 +11,6 @@
     <title></title>
 </head>
 <body>
-<H1>Error!!!</H1>
+<H1>为处理的错误!!!请联系管理员！！！</H1>
 </body>
 </html>
