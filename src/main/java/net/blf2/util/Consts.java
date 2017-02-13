@@ -1,8 +1,12 @@
 package net.blf2.util;
 
+import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -11,10 +15,24 @@ import java.util.Properties;
  */
 public class Consts {
     private static Properties properties;
+    private static List<RoleInfo> roleInfoList;
+    public static Map<String,Map<String,Boolean>> roleRuleMap;
     static{
         properties = new Properties();
         try {
             properties.load(Consts.class.getClassLoader().getResourceAsStream("consts.properties"));
+            roleInfoList = Tools.loadJson("rbac.json",new TypeToken<List<RoleInfo>>(){}.getType());
+            if(roleInfoList != null){
+                roleRuleMap = new HashMap<String, Map<String, Boolean>>();
+                for(RoleInfo roleInfo : roleInfoList){
+                    List<RoleRule> roleRuleList = roleInfo.getRoleRules();
+                    Map<String,Boolean> roleRuleKeyValue = new HashMap<String, Boolean>();
+                    for(RoleRule roleRule : roleRuleList){
+                        roleRuleKeyValue.put(roleRule.getRoleRuleName(),roleRule.getRoleRuleValue());
+                    }
+                    roleRuleMap.put(roleInfo.getRoleName(),roleRuleKeyValue);
+                }
+            }
         }catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -32,4 +50,5 @@ public class Consts {
     public static String MONGO_PRIMARY_KEY_NAME = properties.getProperty("MONGO_PRIMARY_KEY_NAME") != null ? properties.getProperty("MONGO_PRIMARY_KEY_NAME") : "objectId";
     public static String USER_INFO_NAME = properties.getProperty("USER_INFO_NAME") != null ? properties.getProperty("USER_INFO_NAME") : "UserInfo";
     public static String DATABASE_RETURN_ERROR = properties.getProperty("DATABASE_RETURN_ERROR") != null ? properties.getProperty("DATABASE_RETURN_ERROR") : "database return value error";
+    public static String WEB_ERROR_MWSSAGE = properties.getProperty("WEB_ERROR_MWSSAGE") != null ? properties.getProperty("WEB_ERROR_MWSSAGE") : "WebErrorMessage";
 }

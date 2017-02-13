@@ -1,0 +1,36 @@
+[
+  {
+    "roleName":"primary",
+    "roleRules": []
+  },
+  {
+    "roleName":"monitor",
+    "roleRules": [
+      {
+        "roleRuleName":"LookupClassMatesScoreAll",
+        "roleRuleValue": true
+      },
+      {
+        "roleRuleName":"LookupClassMatesInformation",
+        "roleRuleValue": true
+      }
+    ]
+  },
+  {
+    "roleName":"admin",
+    "roleRules": [
+      {
+        "roleRuleName":"LookupUserInformation",
+        "roleRuleValue": true
+      },
+      {
+        "roleRuleValue":"LookupUserScoreAll",
+        "roleRuleName": true
+      },
+      {
+        "roleRuleName":"GenerateInvitationCode",
+        "roleRuleName": true
+      }
+    ]
+  }
+]
