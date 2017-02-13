@@ -91,7 +91,7 @@
 -->
   <error-page>
     <error-code>404</error-code>
-    <location>/notfound.jsp</location>
+    <location>/unkonwerror.jsp</location>
   </error-page>
 
 </web-app>
