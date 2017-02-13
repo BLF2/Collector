@@ -14,11 +14,11 @@ public interface IUserService {
     boolean registerUserInfo(UserInfo userInfo);
     boolean updateUserInfo(UserInfo userInfo);
     boolean deleteUserInfoByUserId(String userId);
-    UserInfo checkLoginInfo(String userNum,String userPswd);
-    boolean checkUserPhoneHasExist(String userPhone);
-    boolean checkUserNumHasExist(String userNum);
+    UserInfo checkLoginInfo(String userNum,String userPswd) throws Exception;
+    boolean checkUserPhoneHasExist(String userPhone) throws Exception;
+    boolean checkUserNumHasExist(String userNum) throws Exception;
     List<UserInfo> getClassMatesByUserGrade(String userGrade);
     List<Map<String,Object>> getClassMatesScoreDetail(String userGrade);
-    boolean addClassMateScoreDetail(Map<String,Object> userScoreDetailMap);
-    boolean updateClassMatesScoreDetail(Map<String,Object> userScoreDetailMap);
+    boolean mongoAddClassMateScoreDetail(Map<String,Object> userScoreDetailMap);
+    boolean mongoUpdateClassMatesScoreDetail(Map<String,Object> userScoreDetailMap);
 }

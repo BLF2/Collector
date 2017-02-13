@@ -58,25 +58,39 @@ public class UserService implements IUserService {
         return false;
     }
 
-    public UserInfo checkLoginInfo(String userNum, String userPswd) {
+    public UserInfo checkLoginInfo(String userNum, String userPswd) throws Exception{
         UserInfo userInfo = null;
         try {
             userInfo = userDao.queryUserInfoByUserNum(userNum);
         }catch (Exception ex){
             ex.printStackTrace();
-            return null;
+            throw new Exception(Consts.DATABASE_RETURN_ERROR);
         }
         if(userInfo != null && userPswd.equals(userInfo.getUserPswd()))
             return userInfo;
         return null;
     }
 
-    public boolean checkUserPhoneHasExist(String userPhone) {
-        return userDao.queryUserIdByUserPhone(userPhone) != null;
+    public boolean checkUserPhoneHasExist(String userPhone) throws Exception{
+        String userId = null;
+        try {
+            userId = userDao.queryUserIdByUserPhone(userPhone);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            throw new Exception(Consts.DATABASE_RETURN_ERROR);
+        }
+        return  userId != null;
     }
 
-    public boolean checkUserNumHasExist(String userNum) {
-        return userDao.queryUserIdByUserNum(userNum) != null;
+    public boolean checkUserNumHasExist(String userNum) throws Exception{
+        String userId = null;
+        try {
+            userId = userDao.queryUserIdByUserNum(userNum);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            throw new Exception(Consts.DATABASE_RETURN_ERROR);
+        }
+        return  userId != null;
     }
 
     public List<UserInfo> getClassMatesByUserGrade(String userGrade) {
@@ -105,12 +119,11 @@ public class UserService implements IUserService {
         return mapUserDetailList;
     }
 
-    public boolean addClassMateScoreDetail(Map<String, Object> userScoreDetailMap) {
-        return false;
+    public boolean mongoAddClassMateScoreDetail(Map<String, Object> userScoreDetailMap) {
+        return MongoOperator.insertDocument(Consts.MONGO_DATABASE_NAME,Consts.MONGO_COLLECTION_FOR_CLASS,userScoreDetailMap);
     }
 
-    public boolean updateClassMatesScoreDetail(Map<String, Object> userScoreDetailMap) {
-        return false;
+    public boolean mongoUpdateClassMatesScoreDetail(Map<String, Object> userScoreDetailMap) {
+        return MongoOperator.updateDocument(Consts.MONGO_DATABASE_NAME,Consts.MONGO_COLLECTION_FOR_CLASS,userScoreDetailMap);
     }
-
 }
