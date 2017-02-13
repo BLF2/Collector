@@ -16,4 +16,5 @@ public interface IClassService {
     boolean checkMajorNameGradeNumHasExist(String majorName,String classGrade,String classNum) throws Exception;
     ClassInfo findClassInfoByMonitorId(String monitorId);
     List<String> findMajorNameGradeNumsAll();
+    boolean deleteClassInfoByClassId(String classId);
 }

@@ -101,4 +101,8 @@ public class ClassService implements IClassService {
         }
         return majorNameGradeNumsAll == null || majorNameGradeNumsAll.size() == 0 ? null : majorNameGradeNumsAll;
     }
+    //TODO: delete all information about it
+    public boolean deleteClassInfoByClassId(String classId) {
+        return false;
+    }
 }
