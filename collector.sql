@@ -27,3 +27,21 @@ roleName varchar(30) not null,
 roleRule varchar(512),
 roleNote varchar(512)
 );
+
+insert into UserRoleInfo(
+roleId, roleName, roleRule, roleNote
+)values(
+'651361f3-aef0-47a4-b341-820432b08c8e','primary',default,default
+);
+
+insert into UserRoleInfo(
+roleId, roleName, roleRule, roleNote
+)values(
+'a2ec492c-dc3c-4130-b40b-f4854bf4ce46','monitor',default,default
+);
+
+insert into UserRoleInfo(
+roleId, roleName, roleRule, roleNote
+)values(
+'9e47f1eb-aef3-42a8-b400-2c7d59d85db0','admin',default,default
+);

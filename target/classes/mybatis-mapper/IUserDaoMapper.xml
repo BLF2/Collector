@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.blf2.dao.IUserDao">
+
+    <sql id="UserInfoColumns">
+        UserInfo.userId,UserInfo.userNum,UserInfo.userPswd,UserInfo.userPhone,UserInfo.userGrade,UserInfo.userNote
+    </sql>
+
+    <sql id="UserRoleInfoColumns">
+        UserRoleInfo.roleId,UserRoleInfo.roleName,UserRoleInfo.roleRule,UserRoleInfo.roleNote
+    </sql>
+
+    <sql id="UserInfoJoinUserRoleInfo">
+        FROM
+        UserInfo
+        LEFT OUTER JOIN
+        UserRoleInfo
+        ON
+        UserInfo.userRoleId = UserRoleInfo.roleId
+    </sql>
+
+    <sql id="insertUserInfoColumns">
+        userId,userNum,userPswd,userPhone,userGrade,userRoleId,userNote
+    </sql>
+
+    <select id="queryUserInfoById" parameterType="String" resultMap="UserInfoResultMap">
+        SELECT
+        <include refid="UserInfoColumns" />,
+        <include refid="UserRoleInfoColumns" />
+        <include refid="UserInfoJoinUserRoleInfo" />
+        WHERE
+        UserInfo.userId = #{userId}
+    </select>
+    <select id="queryUserInfoAll" resultMap="UserInfoResultMap">
+        SELECT
+        <include refid="UserInfoColumns" />
+        <include refid="UserInfoJoinUserRoleInfo" />
+    </select>
+
+    <select id="queryUserInfoByUserNum" parameterType="String" resultMap="UserInfoResultMap">
+        SELECT
+        <include refid="UserInfoColumns" />,
+        <include refid="UserRoleInfoColumns" />
+        <include refid="UserInfoJoinUserRoleInfo" />
+        WHERE
+        UserInfo.userNum = #{userNum}
+    </select>
+
+    <select id="queryUserIdByUserPhone" parameterType="String" resultType="String">
+        SELECT
+        UserInfo.userId
+        FROM
+        UserInfo
+        WHERE
+        UserInfo.userPhone = #{userPhone}
+    </select>
+
+    <select id="queryUserIdByUserNum" parameterType="String" resultType="String">
+        SELECT
+        UserInfo.userId
+        FROM
+        UserInfo
+        WHERE
+        UserInfo.userNum = #{userNum}
+    </select>
+    <select id="queryUserInfoByUserGrade" parameterType="String" resultMap="UserInfoResultMap">
+          SELECT
+            <include refid="UserInfoColumns" />,
+            <include refid="UserRoleInfoColumns" />
+            <include refid="UserInfoJoinUserRoleInfo" />
+          WHERE
+               UserInfo.userGrade = #{userGrade}
+            ORDER BY
+                UserInfo.userNum
+    </select>
+    <insert id="insertUserInfo" parameterType="net.blf2.entity.UserInfo" flushCache="true"
+            statementType="PREPARED" timeout="20000">
+        INSERT INTO
+        UserInfo(
+        <include refid="insertUserInfoColumns" />
+        )
+        VALUES (
+        #{userId},#{userNum},#{userPswd},#{userPhone},#{userGrade},#{userRole.roleId},#{userNote}
+        )
+    </insert>
+
+    <update id="updateUserInfo" parameterType="net.blf2.entity.UserInfo" flushCache="true"
+            statementType="PREPARED" timeout="20000">
+        UPDATE
+        UserInfo
+        SET
+        userNum = #{userNum},
+        userPswd = #{userPswd},
+        userPhone = #{userPhone},
+        userGrade = #{userGrade},
+        userRoleId = #{userRole.roleId},
+        userNote = #{userNote}
+        WHERE
+        UserInfo.userId=#{userId}
+    </update>
+
+    <delete id="deleteUserInfoById" parameterType="String" statementType="PREPARED" timeout="20000"
+            flushCache="true">
+        DELETE FROM
+        UserInfo
+        WHERE
+        UserInfo.userId = #{userId}
+    </delete>
+
+    <resultMap id="UserInfoResultMap" type="net.blf2.entity.UserInfo">
+        <id property="userId" column="userId"/>
+        <result property="userNum" column="userNum"/>
+        <result property="userPswd" column="userPswd"/>
+        <result property="userPhone" column="userPhone"/>
+        <result property="userNote" column="userNote"/>
+        <association property="userRole" column="userRoleId"
+                     javaType="net.blf2.entity.UserRoleInfo" resultMap="UserRoleInfoResultMap"/>
+    </resultMap>
+    <resultMap id="UserRoleInfoResultMap" type="net.blf2.entity.UserRoleInfo">
+        <id property="roleId" column="roleId" />
+        <result property="roleName" column="roleName"/>
+        <result property="roleRule" column="roleRule"/>
+        <result property="roleNote" column="roleNote"/>
+    </resultMap>
+</mapper>

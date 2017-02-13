@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by blf2 on 17-2-13.
@@ -28,7 +29,8 @@ public class ToolsTest {
     @Test
     public void testLoadJson() {
         try {
-            List<RoleInfo> roleInfos = Tools.loadJson("rbac.json",new TypeToken<List<RoleInfo>>(){}.getType());
+            List<RoleInfo> roleInfos = Tools.loadJson("rbac.json", new TypeToken<List<RoleInfo>>() {
+            }.getType());
             for(RoleInfo roleInfo : roleInfos){
                 System.out.println(roleInfo.getRoleName());
                 List<RoleRule> roleRules = roleInfo.getRoleRules();
@@ -42,5 +44,4 @@ public class ToolsTest {
         }
 
     }
-
 }

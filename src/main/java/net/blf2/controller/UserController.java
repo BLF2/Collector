@@ -43,7 +43,7 @@ public class UserController {
         userInfo.setUserNum(userNum);
         userInfo.setUserPswd(userNum);
         userInfo.setUserNote(userNote);
-       // userInfo.setUserRole();
+     //   userInfo.setUserRole(Consts.MONITOR_ROLE_NAME);
         return null;
     }
 }

@@ -1,6 +1,7 @@
 package net.blf2.util;
 
 import com.google.gson.reflect.TypeToken;
+import net.blf2.entity.UserRoleInfo;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -37,6 +38,9 @@ public class Consts {
             ex.printStackTrace();
         }
     }
+    public static String MONITOR_ROLE_NAME = "monitor";
+    public static String PRIMARY_ROLE_NAME = "primary";
+    public static String ADMIN_ROLE_NAME = "admin";
     public static int CONNECTIONS_PER_HOST = properties.getProperty("CONNECTIONS_PER_HOST") != null ? Integer.parseInt(properties.getProperty("CONNECTIONS_PER_HOST")) : 50;
     public static int THREADS_ALLOWED_TO_BLOCK_FOR_CONNECTION_MULTIPLIER = properties.getProperty("THREADS_ALLOWED_TO_BLOCK_FOR_CONNECTION_MULTIPLIER") != null ? Integer.parseInt(properties.getProperty("THREADS_ALLOWED_TO_BLOCK_FOR_CONNECTION_MULTIPLIER")) : 50;
     public static int CONNECT_TIMEOUT = properties.getProperty("CONNECT_TIMEOUT") != null ? Integer.parseInt(properties.getProperty("CONNECT_TIMEOUT")) : 60000;
