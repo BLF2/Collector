@@ -40,7 +40,8 @@ public class MongoOpTest {
             }
             data.put("Test1", "test updata");
             data.put("Test2", 4);
-            data.put("Test3", 9.0);
+            data.put("Test100", 9.0);
+            data.remove("Test3");
             System.out.println("data----->Test1    " + data.get("Test1").toString() + "\n------->" + data.get(Consts.MONGO_PRIMARY_KEY_NAME));
             MongoOperator.updateDocument(Consts.MONGO_DATABASE_NAME, Consts.MONGO_COLLECTION_FOR_CLASS, data);
             Map<String,Object>queryUpd = new HashMap<String, Object>();
@@ -52,7 +53,8 @@ public class MongoOpTest {
                 System.out.println(keyvalue.getKey() + " " + keyvalue.getValue());
             }
             Assert.assertEquals(Integer.valueOf(4), upddocument.getInteger("Test2"));
-            Assert.assertEquals(Double.valueOf(9.0), upddocument.getDouble("Test3"));
+            Assert.assertEquals(Double.valueOf(9.0), upddocument.getDouble("Test100"));
+            Assert.assertTrue(upddocument.get("Test3") == null);
             List<Document> documents= MongoOperator.findAllDocuments(Consts.MONGO_DATABASE_NAME,Consts.MONGO_COLLECTION_FOR_CLASS);
             System.out.println("show all documents:");
             for(Document iDocument : documents){
