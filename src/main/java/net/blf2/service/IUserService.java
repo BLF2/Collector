@@ -21,4 +21,6 @@ public interface IUserService {
     List<Map<String,Object>> getClassMatesScoreDetail(String userGrade);
     boolean mongoAddClassMateScoreDetail(Map<String,Object> userScoreDetailMap);
     boolean mongoUpdateClassMatesScoreDetail(Map<String,Object> userScoreDetailMap);
+    UserInfo findUserInfoByUserNum(String userNum) throws Exception;
+    Map<String,Object> MongoFindUserScoreDetailByUserId(String userId);
 }

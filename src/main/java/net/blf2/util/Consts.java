@@ -38,6 +38,8 @@ public class Consts {
             ex.printStackTrace();
         }
     }
+    public static String LOGIN_INFO = "LoginInfo";
+    public static String USER_SUM_SCORE = "userSumScore";
     public static String MONITOR_ROLE_NAME = "monitor";
     public static String PRIMARY_ROLE_NAME = "primary";
     public static String ADMIN_ROLE_NAME = "admin";

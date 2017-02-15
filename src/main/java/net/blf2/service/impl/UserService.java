@@ -126,4 +126,15 @@ public class UserService implements IUserService {
     public boolean mongoUpdateClassMatesScoreDetail(Map<String, Object> userScoreDetailMap) {
         return MongoOperator.updateDocument(Consts.MONGO_DATABASE_NAME,Consts.MONGO_COLLECTION_FOR_CLASS,userScoreDetailMap);
     }
+
+    public UserInfo findUserInfoByUserNum(String userNum) throws Exception{
+        UserInfo userInfo = null;
+        try {
+            userInfo = userDao.queryUserInfoByUserNum(userNum);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            throw new Exception("数据库检查出错！");
+        }
+        return userInfo;
+    }
 }
