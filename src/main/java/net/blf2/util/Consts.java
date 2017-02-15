@@ -55,4 +55,7 @@ public class Consts {
     public static String USER_INFO_NAME = properties.getProperty("USER_INFO_NAME") != null ? properties.getProperty("USER_INFO_NAME") : "UserInfo";
     public static String DATABASE_RETURN_ERROR = properties.getProperty("DATABASE_RETURN_ERROR") != null ? properties.getProperty("DATABASE_RETURN_ERROR") : "database return value error";
     public static String WEB_ERROR_MWSSAGE = properties.getProperty("WEB_ERROR_MWSSAGE") != null ? properties.getProperty("WEB_ERROR_MWSSAGE") : "WebErrorMessage";
+    public static String PRIMARY_ROLR_ID = properties.getProperty("PRIMARY_ROLR_ID") != null ? properties.getProperty("PRIMARY_ROLR_ID") : "651361f3-aef0-47a4-b341-820432b08c8e" ;
+    public static String MONITOR_ROLE_ID = properties.getProperty("MONITOR_ROLE_ID") != null ? properties.getProperty("MONITOR_ROLE_ID") : "a2ec492c-dc3c-4130-b40b-f4854bf4ce46";
+    public static String ADMIN_ROLE_ID = properties.getProperty("ADMIN_ROLE_ID") != null ? properties.getProperty("ADMIN_ROLE_ID") : "9e47f1eb-aef3-42a8-b400-2c7d59d85db0";
 }
