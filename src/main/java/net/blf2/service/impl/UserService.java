@@ -137,4 +137,12 @@ public class UserService implements IUserService {
         }
         return userInfo;
     }
+
+    public Map<String, Object> MongoFindUserScoreDetailByUserId(String userId) {
+        Map<String,Object> queryMap = new HashMap<String, Object>();
+        queryMap.put(Consts.MONGO_PRIMARY_KEY_NAME,userId);
+        Document document = MongoOperator.findDocument(Consts.MONGO_DATABASE_NAME,Consts.MONGO_COLLECTION_FOR_CLASS,
+                queryMap);
+        return document;
+    }
 }

@@ -1,7 +1,9 @@
 package net.blf2.service.impl;
 
 import net.blf2.dao.IClassDao;
+import net.blf2.dao.IUserDao;
 import net.blf2.entity.ClassInfo;
+import net.blf2.entity.UserInfo;
 import net.blf2.service.IClassService;
 import net.blf2.util.Consts;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,16 @@ public class ClassService implements IClassService {
 
     @Resource
     private IClassDao classDao;
+    @Resource
+    private IUserDao userDao;
+
+    public IUserDao getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(IUserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public IClassDao getClassDao() {
         return classDao;
@@ -29,6 +41,10 @@ public class ClassService implements IClassService {
     public boolean registerClassInfo(ClassInfo classInfo) {
         try {
             classDao.insertClassInfo(classInfo);
+            String majorNameGradeNum = classInfo.getMajorName()+classInfo.getClassGrade()+classInfo.getClassNum();
+            UserInfo userInfo = userDao.queryUserInfoById(classInfo.getMonitorInfo().getUserId());
+            userInfo.setUserGrade(majorNameGradeNum);
+            userDao.updateUserInfo(userInfo);
         }catch (Exception ex){
             ex.printStackTrace();
             return false;

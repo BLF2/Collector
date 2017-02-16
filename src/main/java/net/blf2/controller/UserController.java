@@ -1,8 +1,10 @@
 package net.blf2.controller;
 
+import javafx.beans.binding.ObjectExpression;
 import net.blf2.entity.ItemsInfo;
 import net.blf2.entity.UserInfo;
 import net.blf2.entity.UserRoleInfo;
+import net.blf2.service.IClassService;
 import net.blf2.service.IUserService;
 import net.blf2.util.Consts;
 import net.blf2.util.Tools;
@@ -27,6 +29,16 @@ import java.util.UUID;
 public class UserController {
     @Resource
     private IUserService userService;
+    @Resource
+    private IClassService classService;
+
+    public IClassService getClassService() {
+        return classService;
+    }
+
+    public void setClassService(IClassService classService) {
+        this.classService = classService;
+    }
 
     public IUserService getUserService() {
         return userService;
@@ -86,8 +98,20 @@ public class UserController {
         return this.redirectPage(userInfo.getUserRole());
     }
     @RequestMapping(value = "/updateScore",method = RequestMethod.POST)
-    public void updateScore(UserInfo userInfo,List<ItemsInfo> itemsInfoList){
-        return;
+    public String updateScore(HttpSession httpSession,UserInfo userInfo,List<ItemsInfo> itemsInfoList){
+        if(itemsInfoList != null && userInfo != null){
+            Map<String,Object>scoreDetailMap = new HashMap<String, Object>();
+            scoreDetailMap.put(Consts.MONGO_PRIMARY_KEY_NAME, userInfo.getUserId());
+            Double sum = 0.0;
+            for (ItemsInfo itemsInfo : itemsInfoList){
+                scoreDetailMap.put(itemsInfo.getItemName(),itemsInfo.getItemValue());
+                sum += itemsInfo.getItemValue();
+            }
+            scoreDetailMap.put(Consts.USER_SUM_SCORE, sum);
+            return "findUserInfoPage";
+        }
+        httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE, "未知错误!!!");
+        return "error";
     }
     @RequestMapping(value = "findUserInfoAndScore",method = RequestMethod.POST)
     public String findUserInfoAndScore(@RequestParam(value = "userNum",required = true)String userNum,
@@ -95,9 +119,16 @@ public class UserController {
                                        HttpSession httpSession) throws Exception{
         UserInfo userInfo = userService.checkLoginInfo(userNum,userPswd);
         if(userInfo != null){
-            httpSession.setAttribute(Consts.LOGIN_INFO,userInfo);
+            httpSession.setAttribute(Consts.LOGIN_INFO, userInfo);
+            Map<String,Object>scoreMap = userService.MongoFindUserScoreDetailByUserId(userInfo.getUserId());
+            httpSession.setAttribute(Consts.FRONT_SCORE_MAP, scoreMap);
+            List<String> majorNameGradeNumList = classService.findMajorNameGradeNumsAll();
+            majorNameGradeNumList.remove(userInfo.getUserGrade());
+            httpSession.setAttribute(Consts.FRONT_GRADE_ALL,majorNameGradeNumList);
+            return "findUserInfoPage";
         }
-        return "findUserInfoPage";
+        httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE,"用户名或者密码错误。");
+        return "error";
     }
     private String redirectPage(UserRoleInfo userRoleInfo){
         if(userRoleInfo == null)

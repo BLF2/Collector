@@ -38,6 +38,8 @@ public class Consts {
             ex.printStackTrace();
         }
     }
+    public static String FRONT_GRADE_ALL = "majorNameGradeNum";
+    public static String FRONT_SCORE_MAP = "userScoreMap";
     public static String LOGIN_INFO = "LoginInfo";
     public static String USER_SUM_SCORE = "userSumScore";
     public static String MONITOR_ROLE_NAME = "monitor";
