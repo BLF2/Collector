@@ -124,11 +124,20 @@ public class UserController {
             httpSession.setAttribute(Consts.FRONT_SCORE_MAP, scoreMap);
             List<String> majorNameGradeNumList = classService.findMajorNameGradeNumsAll();
             majorNameGradeNumList.remove(userInfo.getUserGrade());
-            httpSession.setAttribute(Consts.FRONT_GRADE_ALL,majorNameGradeNumList);
+            httpSession.setAttribute(Consts.FRONT_GRADE_ALL, majorNameGradeNumList);
             return "findUserInfoPage";
         }
         httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE,"用户名或者密码错误。");
         return "error";
+    }
+    @RequestMapping(value = "/login",method = {RequestMethod.POST})
+    public String login(@RequestParam(value = "userNum",required = true)String userNum,
+                        @RequestParam(value = "userPswd",required = true)String userPswd) throws Exception{
+        UserInfo userInfo = null;
+        if((userInfo = userService.checkLoginInfo(userNum,userPswd)) != null){
+            return redirectPage(userInfo.getUserRole());
+        }
+        return redirectPage(null);
     }
     private String redirectPage(UserRoleInfo userRoleInfo){
         if(userRoleInfo == null)
