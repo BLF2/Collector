@@ -44,8 +44,8 @@
       <input type="password" class="form-control" id="invitationCode" name="invitationCode" />
     </div>
     <button type="submit" class="btn btn-default">注册</button>
-    <button type="submit" class="btn btn-default">返回</button>
   </form>
+  <a href="/index.jsp"><button type="button" class="btn btn-default">返回</button></a>
 </div>
 <div class="col-md-4"></div>
 </div>
