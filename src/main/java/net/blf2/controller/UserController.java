@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import sun.awt.windows.ThemeReader;
 
 import javax.annotation.Resource;
@@ -31,6 +32,8 @@ public class UserController {
     private IUserService userService;
     @Resource
     private IClassService classService;
+
+    private static boolean isCheckAdmin = false;
 
     public IClassService getClassService() {
         return classService;
@@ -82,7 +85,7 @@ public class UserController {
         if(findUserInfo == null){
             UserRoleInfo userRoleInfo = new UserRoleInfo();
             userRoleInfo.setRoleId(Consts.PRIMARY_ROLR_ID);
-            userRoleInfo.setRoleName(Consts.ADMIN_ROLE_NAME);
+            userRoleInfo.setRoleName(Consts.PRIMARY_ROLE_NAME);
             userInfo.setUserRole(userRoleInfo);
             userService.registerUserInfo(userInfo);
             findUserInfo = userService.findUserInfoByUserNum(userInfo.getUserNum());
@@ -133,20 +136,51 @@ public class UserController {
     @RequestMapping(value = "/login",method = {RequestMethod.POST})
     public String login(@RequestParam(value = "userNum",required = true)String userNum,
                         @RequestParam(value = "userPswd",required = true)String userPswd) throws Exception{
+        if(!isCheckAdmin)
+            checkAdmin();
         UserInfo userInfo = null;
         if((userInfo = userService.checkLoginInfo(userNum,userPswd)) != null){
             return redirectPage(userInfo.getUserRole());
         }
         return redirectPage(null);
     }
+    @RequestMapping(value = "/generateValidateCode",method = {RequestMethod.POST})
+    public String generateValidateCode(ModelAndView model,String userNum) throws Exception{
+        String validateCode = Tools.generateInvitationCode(userNum);
+        model.addObject(Consts.VALIDATE_CODE,validateCode);
+        return "";
+    }
     private String redirectPage(UserRoleInfo userRoleInfo){
         if(userRoleInfo == null)
             return "index";
         if(Consts.ADMIN_ROLE_NAME.equals(userRoleInfo.getRoleName())){
-            return "";
+            return "adminManager";
         }else if(Consts.MONITOR_ROLE_ID.equals(userRoleInfo.getRoleName())){
             return "";
-        }
+        }else if(Consts.PRIMARY_ROLE_NAME.equals(userRoleInfo.getRoleName()))
+            return "";
         return "";
+    }
+    private void checkAdmin() throws Exception{
+        UserInfo checkAdmin = userService.findUserInfoByUserNum(Consts.ADMIN_ACCOUNT_DEFAULT);
+        if(checkAdmin != null){
+            if(!checkAdmin.getUserPswd().equals(Consts.ADMIN_PASSWORD_DEFAULT)){
+                checkAdmin.setUserPswd(Consts.ADMIN_PASSWORD_DEFAULT);
+                userService.updateUserInfo(checkAdmin);
+                isCheckAdmin = true;
+                return;
+            }
+            isCheckAdmin = true;
+            return;
+        }
+        checkAdmin = new UserInfo();
+        UserRoleInfo userRoleInfo = new UserRoleInfo();
+        userRoleInfo.setRoleId(Consts.ADMIN_ROLE_ID);
+        userRoleInfo.setRoleName(Consts.ADMIN_ROLE_NAME);
+        checkAdmin.setUserRole(userRoleInfo);
+        if(userService.registerUserInfo(checkAdmin)) {
+            isCheckAdmin = true;
+        }
+        throw  new Exception();
     }
 }

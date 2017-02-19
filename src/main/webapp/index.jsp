@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Off Canvas Template for Bootstrap</title>
+  <title>Collector</title>
 
   <!-- Bootstrap core CSS -->
   <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -109,16 +109,16 @@
 
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
       <div class="list-group">
-        <a href="#" class="list-group-item active"></a>
-        <a href="#" class="list-group-item"></a>
-        <a href="#" class="list-group-item"></a>
-        <a href="#" class="list-group-item"></a>
-        <a href="#" class="list-group-item"></a>
-        <a href="#" class="list-group-item"></a>
-        <a href="#" class="list-group-item"></a>
-        <a href="#" class="list-group-item"></a>
-        <a href="#" class="list-group-item"></a>
-        <a href="#" class="list-group-item"></a>
+        <%--<a href="#" class="list-group-item active"></a>--%>
+        <%--<a href="#" class="list-group-item"></a>--%>
+        <%--<a href="#" class="list-group-item"></a>--%>
+        <%--<a href="#" class="list-group-item"></a>--%>
+        <%--<a href="#" class="list-group-item"></a>--%>
+        <%--<a href="#" class="list-group-item"></a>--%>
+        <%--<a href="#" class="list-group-item"></a>--%>
+        <%--<a href="#" class="list-group-item"></a>--%>
+        <%--<a href="#" class="list-group-item"></a>--%>
+        <%--<a href="#" class="list-group-item"></a>--%>
       </div>
     </div><!--/.sidebar-offcanvas-->
   </div><!--/row-->

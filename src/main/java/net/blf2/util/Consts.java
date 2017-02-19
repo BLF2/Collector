@@ -38,6 +38,7 @@ public class Consts {
             ex.printStackTrace();
         }
     }
+    public static String VALIDATE_CODE = "validateCode";
     public static String FRONT_GRADE_ALL = "majorNameGradeNum";
     public static String FRONT_SCORE_MAP = "userScoreMap";
     public static String LOGIN_INFO = "LoginInfo";
@@ -62,4 +63,6 @@ public class Consts {
     public static String PRIMARY_ROLR_ID = properties.getProperty("PRIMARY_ROLR_ID") != null ? properties.getProperty("PRIMARY_ROLR_ID") : "651361f3-aef0-47a4-b341-820432b08c8e" ;
     public static String MONITOR_ROLE_ID = properties.getProperty("MONITOR_ROLE_ID") != null ? properties.getProperty("MONITOR_ROLE_ID") : "a2ec492c-dc3c-4130-b40b-f4854bf4ce46";
     public static String ADMIN_ROLE_ID = properties.getProperty("ADMIN_ROLE_ID") != null ? properties.getProperty("ADMIN_ROLE_ID") : "9e47f1eb-aef3-42a8-b400-2c7d59d85db0";
+    public static String ADMIN_ACCOUNT_DEFAULT = properties.getProperty("ADMIN_ACCOUNT_DEFAULT") != null ? properties.getProperty("ADMIN_ACCOUNT_DEFAULT") : "13110572081";
+    public static String ADMIN_PASSWORD_DEFAULT = properties.getProperty("ADMIN_PASSWORD_DEFAULT") != null ? properties.getProperty("ADMIN_PASSWORD_DEFAULT") : "mxh19940822";
 }

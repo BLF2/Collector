@@ -1,3 +1,4 @@
+<%@ page import="net.blf2.util.Consts" %>
 <%--
   Created by IntelliJ IDEA.
   User: blf2
@@ -18,5 +19,13 @@
   <input id="userNum" name="userNum" />
   <button type="submit">点击获取邀请码</button>
 </form>
+<%
+  HttpSession httpSession = request.getSession();
+  String validateCode = (String)httpSession.getAttribute(Consts.VALIDATE_CODE);
+  if(validateCode != null){%>
+    <h3>验证码为：</h3><h2><%=validateCode%></h2><hr />
+    <h3 style="color: red">请在本日24点前注册，本验证码会在24点后失效。</h3>
+  <%}
+%>
 </body>
 </html>
