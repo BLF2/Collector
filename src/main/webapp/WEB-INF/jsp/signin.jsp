@@ -34,7 +34,7 @@
 
 <div class="container">
 
-  <form class="form-signin" action="#" method="post">
+  <form class="form-signin" action="/User/login" method="post">
     <h2 class="form-signin-heading">请登录</h2>
     <label for="userNum" class="sr-only">学号</label>
     <input type="text" id="userNum" name="userNum" class="form-control" placeholder="user num" required autofocus>
@@ -42,7 +42,7 @@
     <input type="password" id="userPswd" name="userPswd" class="form-control" placeholder="user pswd" required>
     <div class="checkbox">
       <label>
-        <input type="checkbox" value="remember-me"> Remember me
+        <input type="checkbox" value="remember-me" name="rememberMe"> 记住我
       </label>
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">登陆</button>

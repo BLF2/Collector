@@ -102,7 +102,7 @@
         <div class="col-xs-6 col-lg-4">
           <h2>管理员进入</h2>
           <p>管理员入口。 </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-default" href="/User/toSignin" role="button">View details &raquo;</a></p>
         </div><!--/.col-xs-6.col-lg-4-->
       </div><!--/row-->
     </div><!--/.col-xs-12.col-sm-9-->
