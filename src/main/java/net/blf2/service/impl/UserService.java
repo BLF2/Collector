@@ -40,6 +40,7 @@ public class UserService implements IUserService {
         try {
             userDao.insertUserInfo(userInfo);
         }catch (Exception ex){
+            ex.printStackTrace();
             return false;
         }
         return true;
@@ -49,6 +50,7 @@ public class UserService implements IUserService {
         try {
             userDao.updateUserInfo(userInfo);
         }catch (Exception ex){
+            ex.printStackTrace();
             return false;
         }
         return true;

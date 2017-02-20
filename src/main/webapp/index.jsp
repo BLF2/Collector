@@ -77,7 +77,7 @@
         <div class="col-xs-6 col-lg-4">
           <h2>班长注册</h2>
           <p>如果你是班长并且还没有账号，请点击这里。 </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-default" href="/User/toMonitorRegister" role="button">View details &raquo;</a></p>
         </div><!--/.col-xs-6.col-lg-4-->
         <div class="col-xs-6 col-lg-4">
           <h2>班长信息修改</h2>

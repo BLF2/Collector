@@ -39,16 +39,14 @@
         <property name="maxInMemorySize" value="40960" />
     </bean>
     <!-- 配置拦截器 -->
-    <!--<mvc:interceptors>
+    <mvc:interceptors>
         <mvc:interceptor>
-            <!– <mvc:mapping path="/**"/>拦截所有 –>
-            <mvc:mapping path="/user/**"/>
-            <mvc:mapping path="/role/**"/>
-            <mvc:mapping path="/function/**"/>
-            <mvc:mapping path="/news/**"/>
-            <mvc:mapping path="/img/**"/>
-            <bean class="com.crossoverJie.intercept.Intercept"></bean>
+            <!--<mvc:mapping path="/**"/>拦截所有 -->
+            <mvc:mapping path="/Class/**"/>
+            <mvc:exclude-mapping path="/User/toSignin" />
+            <mvc:exclude-mapping path="/User/toMonitorRegister" />
+            <bean class="net.blf2.controller.PreForOpInterceptor"></bean>
         </mvc:interceptor>
-    </mvc:interceptors>-->
+    </mvc:interceptors>
 
 </beans>

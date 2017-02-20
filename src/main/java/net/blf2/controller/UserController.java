@@ -1,6 +1,7 @@
 package net.blf2.controller;
 
 import javafx.beans.binding.ObjectExpression;
+import net.blf2.entity.ClassInfo;
 import net.blf2.entity.ItemsInfo;
 import net.blf2.entity.UserInfo;
 import net.blf2.entity.UserRoleInfo;
@@ -52,7 +53,15 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registerMonitor",method = {RequestMethod.POST})
-    public String registerMonitorInfo(HttpSession httpSession,String userNum,String userPswd,String userPhone,String userNote,String invitationCode){
+    public String registerMonitorInfo(HttpSession httpSession,
+                                      @RequestParam(value = "userNum",required = true)String userNum,
+                                      @RequestParam(value = "userPswd",required = true) String userPswd,
+                                      @RequestParam(value = "userPhone",required = true)String userPhone,
+                                      String userNote,String classNote,
+                                      @RequestParam(value = "invitationCode",required = true)String invitationCode,
+                                      @RequestParam(value = "majorName",required = true)String majorName,
+                                      @RequestParam(value = "classGrade",required = true)String classGrade,
+                                      @RequestParam(value = "classNum",required = true)String classNum) throws Exception{
         try {
             if(!Tools.checkInvitationCode(invitationCode,userNum)){
                 httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE,"验证码错误，请重新输入，如果多次出现，请联系管理员！");
@@ -60,18 +69,29 @@ public class UserController {
             }
         }catch (Exception ex){
             httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE, "验证出错，请联系管理员！");
+            throw new Exception();
         }
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(UUID.randomUUID().toString());
         userInfo.setUserNum(userNum);
-        userInfo.setUserPswd(userNum);
+        userInfo.setUserPswd(userPswd);
         userInfo.setUserNote(userNote);
+        userInfo.setUserPhone(userPhone);
+        userInfo.setUserGrade(majorName + classGrade + classNum);
         UserRoleInfo userRoleInfo = new UserRoleInfo();
         userRoleInfo.setRoleId(Consts.MONITOR_ROLE_ID);
         userRoleInfo.setRoleName(Consts.MONITOR_ROLE_NAME);
         userInfo.setUserRole(userRoleInfo);
-        userService.registerUserInfo(userInfo);
-        return this.redirectPage(userRoleInfo);
+        ClassInfo classInfo = new ClassInfo();
+        classInfo.setMonitorInfo(userInfo);
+        classInfo.setClassGrade(classGrade);
+        classInfo.setClassNum(classNum);
+        classInfo.setMajorName(majorName);
+        classInfo.setClassId(UUID.randomUUID().toString());
+        classInfo.setClassNote(classNote);
+        if(userService.registerUserInfo(userInfo) && classService.registerClassInfo(classInfo))
+            return this.redirectPage(userRoleInfo);
+        throw new Exception();
     }
     @RequestMapping(value = "/submitInfo",method = RequestMethod.POST)
     public String submitInfo(UserInfo userInfo,List<ItemsInfo> itemsInfoList,HttpSession httpSession) throws Exception{
@@ -116,7 +136,7 @@ public class UserController {
         httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE, "未知错误!!!");
         return "error";
     }
-    @RequestMapping(value = "findUserInfoAndScore",method = RequestMethod.POST)
+    @RequestMapping(value = "/findUserInfoAndScore",method = RequestMethod.POST)
     public String findUserInfoAndScore(@RequestParam(value = "userNum",required = true)String userNum,
                                        @RequestParam(value = "userPswd",required = true)String userPswd,
                                        HttpSession httpSession) throws Exception{
@@ -145,21 +165,22 @@ public class UserController {
         return redirectPage(null);
     }
     @RequestMapping(value = "/generateValidateCode",method = {RequestMethod.POST})
-    public String generateValidateCode(ModelAndView model,String userNum) throws Exception{
+    public String generateValidateCode(HttpSession httpSession,String userNum) throws Exception{
         String validateCode = Tools.generateInvitationCode(userNum);
-        model.addObject(Consts.VALIDATE_CODE,validateCode);
-        return "";
+        httpSession.setAttribute(Consts.VALIDATE_CODE,validateCode);
+        return "adminManager";
     }
-    private String redirectPage(UserRoleInfo userRoleInfo){
-        if(userRoleInfo == null)
-            return "index";
-        if(Consts.ADMIN_ROLE_NAME.equals(userRoleInfo.getRoleName())){
-            return "adminManager";
-        }else if(Consts.MONITOR_ROLE_ID.equals(userRoleInfo.getRoleName())){
-            return "";
-        }else if(Consts.PRIMARY_ROLE_NAME.equals(userRoleInfo.getRoleName()))
-            return "";
-        return "";
+    @RequestMapping("/toSignin")
+    public String toSignin(){
+        return "signin";
+    }
+    @RequestMapping("/toMonitorRegister")
+    public String toMonitorRegister(){
+        return "monitorRegister";
+    }
+    @RequestMapping("toCreateClassInfo")
+    public String toCreateClassInfo(){
+        return "createClassInfo";
     }
     private void checkAdmin() throws Exception{
         UserInfo checkAdmin = userService.findUserInfoByUserNum(Consts.ADMIN_ACCOUNT_DEFAULT);
@@ -178,9 +199,26 @@ public class UserController {
         userRoleInfo.setRoleId(Consts.ADMIN_ROLE_ID);
         userRoleInfo.setRoleName(Consts.ADMIN_ROLE_NAME);
         checkAdmin.setUserRole(userRoleInfo);
+        checkAdmin.setUserId(UUID.randomUUID().toString());
+        checkAdmin.setUserNum(Consts.ADMIN_ACCOUNT_DEFAULT);
+        checkAdmin.setUserGrade("软件1303");
+        checkAdmin.setUserPswd(Consts.ADMIN_PASSWORD_DEFAULT);
+        checkAdmin.setUserPhone("15800499264");
         if(userService.registerUserInfo(checkAdmin)) {
             isCheckAdmin = true;
+            return;
         }
         throw  new Exception();
+    }
+    private String redirectPage(UserRoleInfo userRoleInfo){
+        if(userRoleInfo == null)
+            return "../../index";
+        if(Consts.ADMIN_ROLE_NAME.equals(userRoleInfo.getRoleName())){
+            return "adminManager";
+        }else if(Consts.MONITOR_ROLE_NAME.equals(userRoleInfo.getRoleName())){
+            return "monitorManager";
+        }else if(Consts.PRIMARY_ROLE_NAME.equals(userRoleInfo.getRoleName()))
+            return "";
+        return "";
     }
 }

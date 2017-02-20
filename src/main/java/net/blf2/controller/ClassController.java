@@ -32,6 +32,6 @@ public class ClassController {
         UserInfo userInfo = (UserInfo)httpSession.getAttribute(Consts.LOGIN_INFO);
         classInfo.setMonitorInfo(userInfo);
         classService.registerClassInfo(classInfo);
-        return "";
+        return "monitorManager";
     }
 }

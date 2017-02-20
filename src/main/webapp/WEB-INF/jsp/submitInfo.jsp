@@ -1,16 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
   User: blf2
-  Date: 17-1-8
-  Time: 下午3:18
+  Date: 17-2-20
+  Time: 下午10:19
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+    <title>学生信息提交</title>
 </head>
 <body>
-<H1>未处理的错误!!!请联系管理员！！！</H1>
+
 </body>
 </html>

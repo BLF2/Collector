@@ -14,7 +14,7 @@
 </head>
 <body>
 <!-- 输入学号，生成邀请码！！！-->
-<form action="#" method="post">
+<form action="/User/generateValidateCode" method="post">
   <label for="userNum">请输入学号</label>
   <input id="userNum" name="userNum" />
   <button type="submit">点击获取邀请码</button>
@@ -22,7 +22,9 @@
 <%
   HttpSession httpSession = request.getSession();
   String validateCode = (String)httpSession.getAttribute(Consts.VALIDATE_CODE);
-  if(validateCode != null){%>
+  if(validateCode != null){
+    httpSession.removeAttribute(Consts.VALIDATE_CODE);
+%>
     <h3>验证码为：</h3><h2><%=validateCode%></h2><hr />
     <h3 style="color: red">请在本日24点前注册，本验证码会在24点后失效。</h3>
   <%}

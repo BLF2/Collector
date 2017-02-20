@@ -15,7 +15,8 @@
 <div class="row">
 <div class="col-md-4"></div>
 <div class="col-md-4">
-  <form>
+  <h2>班长注册</h2>
+  <form action="/User/registerMonitor" method="post">
     <div class="form-group">
       <label for="userNum">学号</label>
       <input type="text" class="form-control" id="userNum" name="userNum"/>
@@ -27,21 +28,37 @@
     </div>
     <div class="form-group">
       <label for="userPswd1">确认密码</label>
-      <input type="password" class="form-control" id="userPswd1" name="userPswd1" onblur="checkPassword()"/>
-      <span><div id="isSameAsUserPawd"></div></span>
+      <input type="password" class="form-control" id="userPswd1" name="userPswd1" onblur="checkPassword()" onfocus="clearText()"/>
+      <span><div id="isSameAsUserPawd" style="color: red"></div></span>
     </div>
     <div class="form-group">
       <label for="userPhone">手机号</label>
-      <input type="password" class="form-control" id="userPhone" name="userPhone" />
+      <input type="text" class="form-control" id="userPhone" name="userPhone" />
       <div id="isHasExistForUserPhone"></div>
     </div>
     <div class="form-group">
+      <label for="majorName">专业名称(如：会计)</label>
+      <input type="text" class="form-control" id="majorName" name="majorName">
+    </div>
+    <div class="form-group">
+      <label for="classGrade">专业年级(如：2015)</label>
+      <input type="text" class="form-control" id="classGrade" name="classGrade">
+    </div>
+    <div class="form-group">
+      <label for="classNum">专业班级(如03)</label>
+      <input type="text" class="form-control" id="classNum" name="classNum">
+    </div>
+    <div class="form-group">
+      <label for="classNote">班级备注(可选填)</label>
+      <textarea class="form-control" id="classNote" name="classNote" ></textarea>
+    </div>
+    <div class="form-group">
       <label for="userNote">自我介绍（可选填）</label>
-      <input type="password" class="form-control" id="userNote" name="userNote" />
+      <textarea class="form-control" id="userNote" name="userNote" ></textarea>
     </div>
     <div class="form-group">
       <label for="invitationCode">邀请码</label>
-      <input type="password" class="form-control" id="invitationCode" name="invitationCode" />
+      <input type="text" class="form-control" id="invitationCode" name="invitationCode" />
     </div>
     <button type="submit" class="btn btn-default">注册</button>
   </form>
@@ -53,12 +70,18 @@
   function checkPassword(){
     var pswd1 = document.getElementById("userPswd");
     var pswd2 = document.getElementById("userPswd1");
-    if(pswd1 != pswd2){
+    if(pswd1 != "" && pswd2 != "" && pswd1 != pswd2){
       var messageForPswd = document.getElementById("isSameAsUserPawd");
-      messageForPswd.innerHTML="两次输入的密码不一致";
-      return false;
+      messageForPswd.innerHTML='两次输入的密码不一致';
     }
-    return true;
+  }
+  function clearText(){
+    var pswd1 = document.getElementById("userPswd");
+    var pswd2 = document.getElementById("userPswd1");
+    if(pswd1 != "" && pswd2 != "" && pswd1 == pswd2){
+      var messageForPswd = document.getElementById("isSameAsUserPawd");
+      messageForPswd.innerHTML="";
+    }
   }
 </script>
 </body>
