@@ -68,19 +68,14 @@
 </div>
 <script type="text/javascript">
   function checkPassword(){
-    var pswd1 = document.getElementById("userPswd");
-    var pswd2 = document.getElementById("userPswd1");
+    var pswd1 = document.getElementById("userPswd").value;
+    var pswd2 = document.getElementById("userPswd1").value;
     if(pswd1 != "" && pswd2 != "" && pswd1 != pswd2){
       var messageForPswd = document.getElementById("isSameAsUserPawd");
       messageForPswd.innerHTML='两次输入的密码不一致';
-    }
-  }
-  function clearText(){
-    var pswd1 = document.getElementById("userPswd");
-    var pswd2 = document.getElementById("userPswd1");
-    if(pswd1 != "" && pswd2 != "" && pswd1 == pswd2){
+    }else{
       var messageForPswd = document.getElementById("isSameAsUserPawd");
-      messageForPswd.innerHTML="";
+      messageForPswd.innerHTML='';
     }
   }
 </script>

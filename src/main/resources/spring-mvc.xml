@@ -45,6 +45,8 @@
             <mvc:mapping path="/Class/**"/>
             <mvc:exclude-mapping path="/User/toSignin" />
             <mvc:exclude-mapping path="/User/toMonitorRegister" />
+            <mvc:exclude-mapping path="/User/submitInfo" />
+            <mvc:exclude-mapping path="/*/to*" />
             <bean class="net.blf2.controller.PreForOpInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>

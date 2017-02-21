@@ -87,7 +87,7 @@
         <div class="col-xs-6 col-lg-4">
           <h2>学生信息提交</h2>
           <p>如果你是学生，并且你的班长已经注册了，请点击这里提交你的信息。 </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-default" href="/User/toSubmitInfo" role="button">View details &raquo;</a></p>
         </div><!--/.col-xs-6.col-lg-4-->
         <div class="col-xs-6 col-lg-4">
           <h2>学生信息修改</h2>

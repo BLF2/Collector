@@ -38,6 +38,7 @@ public class Consts {
             ex.printStackTrace();
         }
     }
+    public static String USER_GRADE_NAME_VALUE = "UserGradeNameValue";
     public static String VALIDATE_CODE = "validateCode";
     public static String FRONT_GRADE_ALL = "majorNameGradeNum";
     public static String FRONT_SCORE_MAP = "userScoreMap";

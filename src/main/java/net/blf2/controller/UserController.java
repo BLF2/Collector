@@ -1,10 +1,7 @@
 package net.blf2.controller;
 
 import javafx.beans.binding.ObjectExpression;
-import net.blf2.entity.ClassInfo;
-import net.blf2.entity.ItemsInfo;
-import net.blf2.entity.UserInfo;
-import net.blf2.entity.UserRoleInfo;
+import net.blf2.entity.*;
 import net.blf2.service.IClassService;
 import net.blf2.service.IUserService;
 import net.blf2.util.Consts;
@@ -35,6 +32,8 @@ public class UserController {
     private IClassService classService;
 
     private static boolean isCheckAdmin = false;
+
+    private static Map<Integer,String> userGradeNameValues;
 
     public IClassService getClassService() {
         return classService;
@@ -94,7 +93,7 @@ public class UserController {
         throw new Exception();
     }
     @RequestMapping(value = "/submitInfo",method = RequestMethod.POST)
-    public String submitInfo(UserInfo userInfo,List<ItemsInfo> itemsInfoList,HttpSession httpSession) throws Exception{
+    public String submitInfo(UserInfo userInfo,ItemsInfoForm itemsInfoForm,HttpSession httpSession) throws Exception{
         UserInfo findUserInfo = null;
         try {
             findUserInfo = userService.findUserInfoByUserNum(userInfo.getUserNum());
@@ -112,9 +111,12 @@ public class UserController {
         }
         Map<String,Object> itemNameValueMap = new HashMap<String, Object>();
         double sum = 0.0;
-        for(ItemsInfo itemsInfo : itemsInfoList){
-            itemNameValueMap.put(itemsInfo.getItemName(),itemsInfo.getItemValue());
-            sum += itemsInfo.getItemValue();
+        List<ItemsInfo> itemsInfoList = itemsInfoForm != null ? itemsInfoForm.getItemsInfoList() : null;
+        if(itemsInfoList != null) {
+            for (ItemsInfo itemsInfo : itemsInfoList) {
+                itemNameValueMap.put(itemsInfo.getItemName(), itemsInfo.getItemValue());
+                sum += itemsInfo.getItemValue();
+            }
         }
         itemNameValueMap.put(Consts.USER_SUM_SCORE, sum);
         itemNameValueMap.put(Consts.MONGO_PRIMARY_KEY_NAME, findUserInfo.getUserId());
@@ -181,6 +183,17 @@ public class UserController {
     @RequestMapping("toCreateClassInfo")
     public String toCreateClassInfo(){
         return "createClassInfo";
+    }
+    @RequestMapping("/toSubmitInfo")
+    public String toSubmitInfo(HttpSession httpSession){
+        List<String>majorNameGradeNumsAll = classService.findMajorNameGradeNumsAll();
+        userGradeNameValues = new HashMap<Integer, String>();
+        int index = 1;
+        for(String str : majorNameGradeNumsAll){
+            userGradeNameValues.put(index,str);
+        }
+        httpSession.setAttribute(Consts.USER_GRADE_NAME_VALUE,userGradeNameValues);
+        return "submitInfo";
     }
     private void checkAdmin() throws Exception{
         UserInfo checkAdmin = userService.findUserInfoByUserNum(Consts.ADMIN_ACCOUNT_DEFAULT);
