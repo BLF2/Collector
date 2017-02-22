@@ -20,7 +20,7 @@
     <title></title>
   <%@include file="HtmlPart/bootstrapCDN.html"%>
   <script type="text/javascript">
-    var index = <%=scoreMap.size() - 1%>;
+    var index = <%=scoreMap != null ? scoreMap.size() - 1 : 1%>;
     function addNewItem(){
       var itemsInfoListName = "itemsInfoList["+(index - 1).toString()+"].itemName";
       var itemsInfoListValue = "itemsInfoList["+(index - 1).toString() + "].itemValue";

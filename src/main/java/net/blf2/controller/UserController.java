@@ -225,6 +225,7 @@ public class UserController {
             int index = 1;
             for(String str : majorNameGradeNumsAll){
                 userGradeNameValues.put(index,str);
+                index++;
             }
             httpSession.setAttribute(Consts.USER_GRADE_NAME_VALUE,userGradeNameValues);
             return "updateUserDetailPage";

@@ -12,7 +12,7 @@
     <%@include file="HtmlPart/bootstrapCDN.html"%>
 </head>
 <body>
-<a href=""><button class="btn btn-primary" type="button">填写或修改本人加减分项</button></a>
+<a href="/User/toUpdateScore"><button class="btn btn-primary" type="button">填写或修改本人加减分项</button></a>
 <a href=""><button class="btn btn-primary" type="button">查看和修改本班信息</button></a>
 <a href=""><button class="btn btn-primary" type="button">查看本班所有信息</button></a>
 </body>
