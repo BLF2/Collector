@@ -90,14 +90,14 @@
           <p><a class="btn btn-default" href="/User/toSubmitInfo" role="button">View details &raquo;</a></p>
         </div><!--/.col-xs-6.col-lg-4-->
         <div class="col-xs-6 col-lg-4">
-          <h2>学生信息修改</h2>
+          <h2>学生信息查询</h2>
           <p>如果你发现你的综合测评加减分有问题，请点击这里这里修改。 </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-default" href="/User/toSignin" role="button">View details &raquo;</a></p>
         </div><!--/.col-xs-6.col-lg-4-->
         <div class="col-xs-6 col-lg-4">
-          <h2>学生信息查询</h2>
+          <h2>学生信息修改</h2>
           <p>如果你想查看你的已经提交的信息，请点击这里。</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-default" href="/User/toSignin" role="button">View details &raquo;</a></p>
         </div><!--/.col-xs-6.col-lg-4-->
         <div class="col-xs-6 col-lg-4">
           <h2>管理员进入</h2>

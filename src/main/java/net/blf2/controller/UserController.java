@@ -126,20 +126,30 @@ public class UserController {
         itemNameValueMap.put(Consts.USER_SUM_SCORE, sum);
         itemNameValueMap.put(Consts.MONGO_PRIMARY_KEY_NAME, findUserInfo.getUserId());
         userService.mongoAddClassMateScoreDetail(itemNameValueMap);
+        httpSession.setAttribute(Consts.LOGIN_INFO,findUserInfo);
         return this.redirectPage(userInfo.getUserRole());
     }
     @RequestMapping(value = "/updateScore",method = RequestMethod.POST)
-    public String updateScore(HttpSession httpSession,UserInfo userInfo,List<ItemsInfo> itemsInfoList){
-        if(itemsInfoList != null && userInfo != null){
+    public String updateScore(HttpSession httpSession,UserInfo userInfo,ItemsInfoForm itemsInfoForm){
+        if(itemsInfoForm != null && userInfo != null){
+            UserInfo loginInfo = (UserInfo) httpSession.getAttribute(Consts.LOGIN_INFO);
+            userInfo.setUserRole(loginInfo.getUserRole());
             Map<String,Object>scoreDetailMap = new HashMap<String, Object>();
             scoreDetailMap.put(Consts.MONGO_PRIMARY_KEY_NAME, userInfo.getUserId());
             Double sum = 0.0;
-            for (ItemsInfo itemsInfo : itemsInfoList){
-                scoreDetailMap.put(itemsInfo.getItemName(),itemsInfo.getItemValue());
-                sum += itemsInfo.getItemValue();
+            List<ItemsInfo> itemsInfoList = itemsInfoForm != null ? itemsInfoForm.getItemsInfoList() : null;
+            if(itemsInfoList != null) {
+                for (ItemsInfo itemsInfo : itemsInfoList) {
+                    if(itemsInfo != null && itemsInfo.getItemName() != null && itemsInfo.getItemValue() != null) {
+                        scoreDetailMap.put(itemsInfo.getItemName(), itemsInfo.getItemValue());
+                        sum += itemsInfo.getItemValue();
+                    }
+                }
             }
             scoreDetailMap.put(Consts.USER_SUM_SCORE, sum);
-            return "findUserInfoPage";
+            userService.updateUserInfo(userInfo);
+            userService.mongoUpdateClassMatesScoreDetail(scoreDetailMap);
+            return this.redirectPage(userInfo.getUserRole());
         }
         httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE, "未知错误!!!");
         return "error";
@@ -163,11 +173,13 @@ public class UserController {
     }
     @RequestMapping(value = "/login",method = {RequestMethod.POST})
     public String login(@RequestParam(value = "userNum",required = true)String userNum,
-                        @RequestParam(value = "userPswd",required = true)String userPswd) throws Exception{
+                        @RequestParam(value = "userPswd",required = true)String userPswd,
+                        HttpSession httpSession) throws Exception{
         if(!isCheckAdmin)
             checkAdmin();
         UserInfo userInfo = null;
         if((userInfo = userService.checkLoginInfo(userNum,userPswd)) != null){
+            httpSession.setAttribute(Consts.LOGIN_INFO,userInfo);
             return redirectPage(userInfo.getUserRole());
         }
         return redirectPage(null);
@@ -197,9 +209,27 @@ public class UserController {
         int index = 1;
         for(String str : majorNameGradeNumsAll){
             userGradeNameValues.put(index,str);
+            index++;
         }
         httpSession.setAttribute(Consts.USER_GRADE_NAME_VALUE,userGradeNameValues);
         return "submitInfo";
+    }
+    @RequestMapping("/toUpdateScore")
+    public String toUpdateScore(HttpSession httpSession){
+        UserInfo userInfo = (UserInfo)httpSession.getAttribute(Consts.LOGIN_INFO);
+        if(userInfo != null) {
+            Map<String, Object> scoreMap = userService.MongoFindUserScoreDetailByUserId(userInfo.getUserId());
+            httpSession.setAttribute(Consts.FRONT_SCORE_MAP, scoreMap);
+            List<String>majorNameGradeNumsAll = classService.findMajorNameGradeNumsAll();
+            userGradeNameValues = new HashMap<Integer, String>();
+            int index = 1;
+            for(String str : majorNameGradeNumsAll){
+                userGradeNameValues.put(index,str);
+            }
+            httpSession.setAttribute(Consts.USER_GRADE_NAME_VALUE,userGradeNameValues);
+            return "updateUserDetailPage";
+        }
+        return "error";
     }
     private void checkAdmin() throws Exception{
         UserInfo checkAdmin = userService.findUserInfoByUserNum(Consts.ADMIN_ACCOUNT_DEFAULT);
@@ -220,7 +250,7 @@ public class UserController {
         checkAdmin.setUserRole(userRoleInfo);
         checkAdmin.setUserId(UUID.randomUUID().toString());
         checkAdmin.setUserNum(Consts.ADMIN_ACCOUNT_DEFAULT);
-        checkAdmin.setUserGrade("软件1303");
+        checkAdmin.setUserGrade("软件201303");
         checkAdmin.setUserPswd(Consts.ADMIN_PASSWORD_DEFAULT);
         checkAdmin.setUserPhone("15800499264");
         if(userService.registerUserInfo(checkAdmin)) {
@@ -237,7 +267,7 @@ public class UserController {
         }else if(Consts.MONITOR_ROLE_NAME.equals(userRoleInfo.getRoleName())){
             return "monitorManager";
         }else if(Consts.PRIMARY_ROLE_NAME.equals(userRoleInfo.getRoleName()))
-            return "";
+            return "redirect:/User/toUpdateScore";
         return "";
     }
 }
