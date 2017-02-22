@@ -16,6 +16,7 @@
         <result property="userPswd" column="userPswd"/>
         <result property="userPhone" column="userPhone"/>
         <result property="userNote" column="userNote"/>
+        <result property="userGrade" column="userGrade" />
         <association property="userRole" column="userRoleId"
                      javaType="net.blf2.entity.UserRoleInfo" resultMap="UserRoleInfoResultMap"/>
     </resultMap>
@@ -103,8 +104,7 @@
           ClassInfo.monitorId = #{monitorId}
     </select>
 
-    <select id="queryMajorNameGradeNums" statementType="PREPARED" parameterType="String"
-            resultType="String">
+    <select id="queryMajorNameGradeNums" statementType="PREPARED" resultType="String">
         SELECT CONCAT(ClassInfo.majorName,ClassInfo.classGrade,ClassInfo.classNum)
         FROM
           ClassInfo
