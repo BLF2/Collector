@@ -15,12 +15,14 @@
   <script type="text/javascript">
     var index = 1;
     function addNewItem(){
+      var itemsInfoListName = "itemsInfoList["+(index - 1).toString()+"].itemName";
+      var itemsInfoListValue = "itemsInfoList["+(index - 1).toString() + "].itemValue";
       var curentParent = document.getElementById("itemInfo");
-      var str =   '<label>项目：</label> '+
-              '<input type="text" class="form-control" name="itemName"/>'+
-              ' <label>加减分：（请用正负数表示）</label>'+
-              '<input type="number" class="form-control" name="itemValue"/>'+
-              '<button type="button" class="btn btn-danger" onclick="deleteNode('+"\'itemInfo"+index+'\')"'+'>删除此项</button>';
+      var str = '<label>项目：</label> '+
+                '<input type="text" class="form-control" name="'+itemsInfoListName+'"/>'+
+                ' <label>加减分：（请用正负数表示）</label>'+
+                '<input type="number" class="form-control" name="'+itemsInfoListValue+'"/>'+
+                '<button type="button" class="btn btn-danger" onclick="deleteNode('+"\'itemInfo"+index+'\')"'+'>删除此项</button>';
 
       var firstDiv = document.createElement("div");
       firstDiv.setAttribute("class","form-group");

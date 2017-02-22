@@ -106,20 +106,26 @@ public class UserController {
             userRoleInfo.setRoleId(Consts.PRIMARY_ROLR_ID);
             userRoleInfo.setRoleName(Consts.PRIMARY_ROLE_NAME);
             userInfo.setUserRole(userRoleInfo);
+            userInfo.setUserId(UUID.randomUUID().toString());
+            String userGradeTrs = userGradeNameValues.get(Integer.parseInt(userInfo.getUserGrade())) != null ? userGradeNameValues.get(Integer.parseInt(userInfo.getUserGrade())) : "default";
+            userInfo.setUserGrade(userGradeTrs);
             userService.registerUserInfo(userInfo);
-            findUserInfo = userService.findUserInfoByUserNum(userInfo.getUserNum());
+            findUserInfo = userInfo;
         }
         Map<String,Object> itemNameValueMap = new HashMap<String, Object>();
         double sum = 0.0;
         List<ItemsInfo> itemsInfoList = itemsInfoForm != null ? itemsInfoForm.getItemsInfoList() : null;
         if(itemsInfoList != null) {
             for (ItemsInfo itemsInfo : itemsInfoList) {
-                itemNameValueMap.put(itemsInfo.getItemName(), itemsInfo.getItemValue());
-                sum += itemsInfo.getItemValue();
+                if(itemsInfo != null && itemsInfo.getItemName() != null && itemsInfo.getItemValue() != null) {
+                    itemNameValueMap.put(itemsInfo.getItemName(), itemsInfo.getItemValue());
+                    sum += itemsInfo.getItemValue();
+                }
             }
         }
         itemNameValueMap.put(Consts.USER_SUM_SCORE, sum);
         itemNameValueMap.put(Consts.MONGO_PRIMARY_KEY_NAME, findUserInfo.getUserId());
+        userService.mongoAddClassMateScoreDetail(itemNameValueMap);
         return this.redirectPage(userInfo.getUserRole());
     }
     @RequestMapping(value = "/updateScore",method = RequestMethod.POST)

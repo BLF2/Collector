@@ -1,12 +1,14 @@
 package net.blf2.entity;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by blf2 on 17-2-21.
  */
 public class ItemsInfoForm {
-    private List<ItemsInfo> itemsInfoList;
+    private List<ItemsInfo> itemsInfoList ;
 
     public List<ItemsInfo> getItemsInfoList() {
         return itemsInfoList;
