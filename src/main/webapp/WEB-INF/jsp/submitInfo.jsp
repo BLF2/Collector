@@ -89,6 +89,10 @@
         </select>
       </div>
       <div class="form-group">
+        <label for="validateCode">邀请码：</label>
+        <input name="validateCode" id="validateCode" type="text" class="form-control"/>
+      </div>
+      <div class="form-group">
         <label for="userNote">备注：（选填）</label>
         <textarea class="form-control" id="userNote" name="userNote"></textarea>
       </div>

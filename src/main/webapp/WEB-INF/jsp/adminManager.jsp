@@ -15,7 +15,7 @@
 <body>
 <!-- 输入学号，生成邀请码！！！-->
 <form action="/User/generateValidateCode" method="post">
-  <label for="userNum">请输入学号</label>
+  <label for="userNum">请输入学号或班级名称（如会计201501）</label>
   <input id="userNum" name="userNum" />
   <button type="submit">点击获取邀请码</button>
 </form>

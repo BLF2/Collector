@@ -93,15 +93,15 @@ public class UserController {
         throw new Exception();
     }
     @RequestMapping(value = "/submitInfo",method = RequestMethod.POST)
-    public String submitInfo(UserInfo userInfo,ItemsInfoForm itemsInfoForm,HttpSession httpSession) throws Exception{
+    public String submitInfo(UserInfo userInfo,ItemsInfoForm itemsInfoForm,String validateCode,HttpSession httpSession) throws Exception{
         UserInfo findUserInfo = null;
-        try {
-            findUserInfo = userService.findUserInfoByUserNum(userInfo.getUserNum());
-        }catch (Exception ex){
-            httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE,ex.getMessage());
-            throw new Exception();
-        }
-        if(findUserInfo == null){
+//        try {
+//            findUserInfo = userService.findUserInfoByUserNum(userInfo.getUserNum());
+//        }catch (Exception ex){
+//            httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE,ex.getMessage());
+//            throw new Exception();
+//        }
+//        if(findUserInfo == null){
             UserRoleInfo userRoleInfo = new UserRoleInfo();
             userRoleInfo.setRoleId(Consts.PRIMARY_ROLR_ID);
             userRoleInfo.setRoleName(Consts.PRIMARY_ROLE_NAME);
@@ -111,7 +111,7 @@ public class UserController {
             userInfo.setUserGrade(userGradeTrs);
             userService.registerUserInfo(userInfo);
             findUserInfo = userInfo;
-        }
+   //     }
         Map<String,Object> itemNameValueMap = new HashMap<String, Object>();
         double sum = 0.0;
         List<ItemsInfo> itemsInfoList = itemsInfoForm != null ? itemsInfoForm.getItemsInfoList() : null;
