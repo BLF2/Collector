@@ -71,7 +71,7 @@
       </p>
       <div class="jumbotron">
         <h1>Collector</h1>
-        <p>这是BLF2专门为ECHO开发的名为收集者的软件，班里的同学可以通过此平台填写表格来上传个人的综合测评加减分。</p>
+        <p>这是BLF2专门为ECHO开发的名为收集者的BUG，班里的同学可以通过此平台填写表格来上传个人的综合测评加减分。</p>
       </div>
       <div class="row">
         <div class="col-xs-6 col-lg-4">
