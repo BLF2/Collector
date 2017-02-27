@@ -64,6 +64,7 @@
       for(var i = 1;i < index;i++){
         document.getElementById("readOnlyName"+i+"").removeAttribute("readonly");
         document.getElementById("readOnlyValue"+i+"").removeAttribute("readonly");
+        document.getElementById("hiddenButton"+i+"").style.display="block"
       }
       document.getElementById("addNewOne").style.display = "block";
       document.getElementById("saveInfo").style.display = "block";
@@ -140,7 +141,7 @@
                 <input readonly="readonly" type="text" class="form-control" id='<%="readOnlyName"+index%>' name="<%=itemsInfoListName%>" value="<%=entry.getKey()%>"/>
                 <label>加减分：（请用正负数表示）</label>
                 <input  readonly="readonly" type="number" class="form-control" id='<%="readOnlyValue"+index%>' name="<%=itemsInfoListValue%>" value="<%=entry.getValue()%>"/>
-                <button hidden="hidden" type="button" id='<%="hiddenButton"+index%>' class="btn btn-danger" onclick="deleteNode('<%=id%>')">删除此项</button>
+                <button style="display: none" type="button" id='<%="hiddenButton"+index%>' class="btn btn-danger" onclick="deleteNode('<%=id%>')">删除此项</button>
               </div>
             <%
                   index++;

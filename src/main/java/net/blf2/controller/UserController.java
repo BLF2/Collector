@@ -298,7 +298,7 @@ public class UserController {
         throw  new Exception();
     }
     private String redirectPage(UserInfo userInfo,HttpSession httpSession){
-        if(userInfo.getUserRole() == null)
+        if(userInfo == null || userInfo.getUserRole() == null)
             return "../../index";
         if(Consts.ADMIN_ROLE_NAME.equals(userInfo.getUserRole().getRoleName())){
             return "adminManager";

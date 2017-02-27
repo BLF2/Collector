@@ -80,9 +80,9 @@
           <p><a class="btn btn-default" href="/User/toMonitorRegister" role="button">View details &raquo;</a></p>
         </div><!--/.col-xs-6.col-lg-4-->
         <div class="col-xs-6 col-lg-4">
-          <h2>班长信息修改</h2>
-          <p>如果你是班长，并且已有自己的账号，你想创建班级或者修改信息，请点击这里。</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <h2>班长登陆</h2>
+          <p>如果你是班长，并且已有自己的账号，想登陆的话，请点击这里。</p>
+          <p><a class="btn btn-default" href="/User/toSignin" role="button">View details &raquo;</a></p>
         </div><!--/.col-xs-6.col-lg-4-->
         <div class="col-xs-6 col-lg-4">
           <h2>学生信息提交</h2>
