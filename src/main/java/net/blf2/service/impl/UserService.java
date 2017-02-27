@@ -5,10 +5,22 @@ import net.blf2.dao.MongoOperator;
 import net.blf2.entity.UserInfo;
 import net.blf2.service.IUserService;
 import net.blf2.util.Consts;
+import net.blf2.util.Tools;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.bson.Document;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.*;
 
 /**
@@ -146,5 +158,49 @@ public class UserService implements IUserService {
         Document document = MongoOperator.findDocument(Consts.MONGO_DATABASE_NAME,Consts.MONGO_COLLECTION_FOR_CLASS,
                 queryMap);
         return document;
+    }
+
+    public void generateExcel(String userGrade) throws Exception{
+        List<UserInfo> userInfoList = getClassMatesByUserGrade(userGrade);
+        String fileName = Tools.class.getClassLoader().getResource("").getPath()+Consts.EXCEL_FILE_PATH+"/"+userGrade+".xls";
+        System.out.println(fileName);
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        int index = 1;
+        Row row;
+        row = sheet.createRow(0);
+        row.createCell(0).setCellValue("学号");
+        row.createCell(1).setCellValue("加减分明细");
+        row.createCell(2).setCellValue("合计");
+        for(UserInfo iUserInfo : userInfoList){
+            if(Consts.ADMIN_ROLE_NAME.equals(iUserInfo.getUserRole().getRoleName()))
+                continue;
+            Map<String,Object>scoreMap = this.MongoFindUserScoreDetailByUserId(iUserInfo.getUserId());
+            String str = "";
+            if(scoreMap != null) {
+                for (Map.Entry<String, Object> entry : scoreMap.entrySet()) {
+                    String key = entry.getKey();
+                    Object value = entry.getValue();
+                    if (!("_id".equals(key) || Consts.USER_SUM_SCORE.equals(key))) {
+                        str += (key + " " + value + "\n");
+                    }
+                }
+                System.out.println(str);
+            }
+            row = sheet.createRow(index++);
+            row.createCell(0).setCellValue(iUserInfo.getUserNum());
+            row.createCell(1).setCellValue((str));
+            Double sum = scoreMap != null ? (Double)scoreMap.get(Consts.USER_SUM_SCORE) : 0.0;
+            row.createCell(2).setCellValue(sum);
+        }
+        sheet.autoSizeColumn(0);
+        sheet.autoSizeColumn(1);
+        sheet.autoSizeColumn(2);
+        File file = new File(fileName);
+        if(!file.exists())
+            file.createNewFile();
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        wb.write(fileOutputStream);
+        wb.close();
     }
 }

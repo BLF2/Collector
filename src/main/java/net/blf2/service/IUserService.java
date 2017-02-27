@@ -23,4 +23,5 @@ public interface IUserService {
     boolean mongoUpdateClassMatesScoreDetail(Map<String,Object> userScoreDetailMap);
     UserInfo findUserInfoByUserNum(String userNum) throws Exception;
     Map<String,Object> MongoFindUserScoreDetailByUserId(String userId);
+    void generateExcel(String userGrade)throws Exception;
 }

@@ -88,6 +88,10 @@ public class UserController {
         classInfo.setMajorName(majorName);
         classInfo.setClassId(UUID.randomUUID().toString());
         classInfo.setClassNote(classNote);
+        Map<String,Object> itemNameValueMap = new HashMap<String, Object>();
+        itemNameValueMap.put(Consts.USER_SUM_SCORE, 0.0);
+        itemNameValueMap.put(Consts.MONGO_PRIMARY_KEY_NAME, userInfo.getUserId());
+        userService.mongoAddClassMateScoreDetail(itemNameValueMap);
         if(userService.registerUserInfo(userInfo) && classService.registerClassInfo(classInfo)) {
             httpSession.setAttribute(Consts.LOGIN_INFO,userInfo);
             return this.redirectPage(userRoleInfo, httpSession);
@@ -122,8 +126,8 @@ public class UserController {
             userInfo.setUserGrade(userGradeTrs);
             userService.registerUserInfo(userInfo);
             findUserInfo = userInfo;
-        Map<String,Object> itemNameValueMap = new HashMap<String, Object>();
         double sum = 0.0;
+        Map<String,Object> itemNameValueMap = new HashMap<String, Object>();
         List<ItemsInfo> itemsInfoList = itemsInfoForm != null ? itemsInfoForm.getItemsInfoList() : null;
         if(itemsInfoList != null) {
             for (ItemsInfo itemsInfo : itemsInfoList) {
