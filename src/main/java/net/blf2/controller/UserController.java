@@ -88,30 +88,40 @@ public class UserController {
         classInfo.setMajorName(majorName);
         classInfo.setClassId(UUID.randomUUID().toString());
         classInfo.setClassNote(classNote);
-        if(userService.registerUserInfo(userInfo) && classService.registerClassInfo(classInfo))
-            return this.redirectPage(userRoleInfo);
+        if(userService.registerUserInfo(userInfo) && classService.registerClassInfo(classInfo)) {
+            httpSession.setAttribute(Consts.LOGIN_INFO,userInfo);
+            return this.redirectPage(userRoleInfo, httpSession);
+        }
         throw new Exception();
     }
     @RequestMapping(value = "/submitInfo",method = RequestMethod.POST)
-    public String submitInfo(UserInfo userInfo,ItemsInfoForm itemsInfoForm,String validateCode,HttpSession httpSession) throws Exception{
+    public String submitInfo(UserInfo userInfo,ItemsInfoForm itemsInfoForm,
+                             @RequestParam(value = "validateCode",required = true)String validateCode,
+                             HttpSession httpSession) throws Exception{
         UserInfo findUserInfo = null;
-//        try {
-//            findUserInfo = userService.findUserInfoByUserNum(userInfo.getUserNum());
-//        }catch (Exception ex){
-//            httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE,ex.getMessage());
-//            throw new Exception();
-//        }
-//        if(findUserInfo == null){
+        try {
+            findUserInfo = userService.findUserInfoByUserNum(userInfo.getUserNum());
+        }catch (Exception ex){
+            httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE,ex.getMessage());
+            throw new Exception();
+        }
+        if(findUserInfo != null){
+            httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE,"您的学号已经注册！！！");
+            return "error";
+        }
+        String userGradeTrs = userGradeNameValues.get(Integer.parseInt(userInfo.getUserGrade())) != null ? userGradeNameValues.get(Integer.parseInt(userInfo.getUserGrade())) : "default";
+        if(!Tools.checkInvitationCode(validateCode,userGradeTrs)){
+            httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE,"验证码错误，请向班长索要正确验证码。");
+            return "error";
+        }
             UserRoleInfo userRoleInfo = new UserRoleInfo();
             userRoleInfo.setRoleId(Consts.PRIMARY_ROLR_ID);
             userRoleInfo.setRoleName(Consts.PRIMARY_ROLE_NAME);
             userInfo.setUserRole(userRoleInfo);
             userInfo.setUserId(UUID.randomUUID().toString());
-            String userGradeTrs = userGradeNameValues.get(Integer.parseInt(userInfo.getUserGrade())) != null ? userGradeNameValues.get(Integer.parseInt(userInfo.getUserGrade())) : "default";
             userInfo.setUserGrade(userGradeTrs);
             userService.registerUserInfo(userInfo);
             findUserInfo = userInfo;
-   //     }
         Map<String,Object> itemNameValueMap = new HashMap<String, Object>();
         double sum = 0.0;
         List<ItemsInfo> itemsInfoList = itemsInfoForm != null ? itemsInfoForm.getItemsInfoList() : null;
@@ -127,7 +137,7 @@ public class UserController {
         itemNameValueMap.put(Consts.MONGO_PRIMARY_KEY_NAME, findUserInfo.getUserId());
         userService.mongoAddClassMateScoreDetail(itemNameValueMap);
         httpSession.setAttribute(Consts.LOGIN_INFO,findUserInfo);
-        return this.redirectPage(userInfo.getUserRole());
+        return this.redirectPage(userInfo.getUserRole(),httpSession);
     }
     @RequestMapping(value = "/updateScore",method = RequestMethod.POST)
     public String updateScore(HttpSession httpSession,UserInfo userInfo,ItemsInfoForm itemsInfoForm){
@@ -149,7 +159,7 @@ public class UserController {
             scoreDetailMap.put(Consts.USER_SUM_SCORE, sum);
             userService.updateUserInfo(userInfo);
             userService.mongoUpdateClassMatesScoreDetail(scoreDetailMap);
-            return this.redirectPage(userInfo.getUserRole());
+            return this.redirectPage(userInfo.getUserRole(),httpSession);
         }
         httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE, "未知错误!!!");
         return "error";
@@ -180,15 +190,15 @@ public class UserController {
         UserInfo userInfo = null;
         if((userInfo = userService.checkLoginInfo(userNum,userPswd)) != null){
             httpSession.setAttribute(Consts.LOGIN_INFO,userInfo);
-            return redirectPage(userInfo.getUserRole());
+            return redirectPage(userInfo.getUserRole(),httpSession);
         }
-        return redirectPage(null);
+        return redirectPage(null,null);
     }
     @RequestMapping(value = "/generateValidateCode",method = {RequestMethod.POST})
     public String generateValidateCode(HttpSession httpSession,String userNum) throws Exception{
         String validateCode = Tools.generateInvitationCode(userNum);
         httpSession.setAttribute(Consts.VALIDATE_CODE,validateCode);
-        return "adminManager";
+        return redirectPage(((UserInfo)httpSession.getAttribute(Consts.LOGIN_INFO)).getUserRole(),httpSession);
     }
     @RequestMapping("/toSignin")
     public String toSignin(){
@@ -260,12 +270,15 @@ public class UserController {
         }
         throw  new Exception();
     }
-    private String redirectPage(UserRoleInfo userRoleInfo){
+    private String redirectPage(UserRoleInfo userRoleInfo,HttpSession httpSession){
         if(userRoleInfo == null)
             return "../../index";
         if(Consts.ADMIN_ROLE_NAME.equals(userRoleInfo.getRoleName())){
             return "adminManager";
+
         }else if(Consts.MONITOR_ROLE_NAME.equals(userRoleInfo.getRoleName())){
+            List<String> majorNameGradeNumList = classService.findMajorNameGradeNumsAll();
+            httpSession.setAttribute(Consts.MAJORNAME_GRADE_NUM_LIST,majorNameGradeNumList);
             return "monitorManager";
         }else if(Consts.PRIMARY_ROLE_NAME.equals(userRoleInfo.getRoleName()))
             return "redirect:/User/toUpdateScore";
