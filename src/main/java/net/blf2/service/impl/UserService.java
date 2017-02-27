@@ -160,10 +160,9 @@ public class UserService implements IUserService {
         return document;
     }
 
-    public void generateExcel(String userGrade) throws Exception{
+    public void generateExcel(String userGrade,String fName) throws Exception{
         List<UserInfo> userInfoList = getClassMatesByUserGrade(userGrade);
-        String fileName = Tools.class.getClassLoader().getResource("").getPath()+Consts.EXCEL_FILE_PATH+"/"+userGrade+".xls";
-        System.out.println(fileName);
+        String fileName = Tools.class.getClassLoader().getResource("").getPath()+Consts.EXCEL_FILE_PATH+fName+".xls";
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
         int index = 1;
@@ -185,7 +184,6 @@ public class UserService implements IUserService {
                         str += (key + " " + value + "\n");
                     }
                 }
-                System.out.println(str);
             }
             row = sheet.createRow(index++);
             row.createCell(0).setCellValue(iUserInfo.getUserNum());

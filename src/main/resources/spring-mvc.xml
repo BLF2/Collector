@@ -13,11 +13,11 @@
     <context:component-scan base-package="net.blf2.controller" />
 
     <mvc:annotation-driven/>
-    <!--静态文件不拦截
-        <mvc:resources location="/image/" mapping="/image/**"/>
-        <mvc:resources location="/css/" mapping="/css/**"/>
-        <mvc:resources location="/js/" mapping="/js/**"/>
-    -->
+
+        <mvc:resources location="staticfile/" mapping="/resources/**"/>
+        <mvc:default-servlet-handler />
+    <!--<mvc:resources location="/css/" mapping="/css/**"/>-->
+        <!--<mvc:resources location="/js/" mapping="/js/**"/>-->
     <!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射
     -->
 
@@ -47,6 +47,7 @@
             <mvc:exclude-mapping path="/User/toMonitorRegister" />
             <mvc:exclude-mapping path="/User/submitInfo" />
             <mvc:exclude-mapping path="/*/to*" />
+            <mvc:exclude-mapping path="/resources/**" />
             <bean class="net.blf2.controller.PreForOpInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>

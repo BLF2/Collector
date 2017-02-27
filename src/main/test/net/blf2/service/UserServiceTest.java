@@ -28,7 +28,7 @@ public class UserServiceTest {
     public void testUserService(){
         String userGrade = "软件201301";
         try {
-            userService.generateExcel(userGrade);
+            userService.generateExcel(userGrade,"x");
         }catch (Exception ex){
             ex.printStackTrace();
             Assert.assertTrue(false);

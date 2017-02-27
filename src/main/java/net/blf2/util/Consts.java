@@ -38,6 +38,8 @@ public class Consts {
             ex.printStackTrace();
         }
     }
+    public static String EXCEL_DOWNLOAD_PATH = "excelDownloadPath";
+    public static String USER_DETAIL_INFO_BY_USER_GRADE = "userDetailInfoByUserGrade";
     public static String MAJORNAME_GRADE_NUM_LIST = "majorNameGradeNumList";
     public static String USER_GRADE_NAME_VALUE = "UserGradeNameValue";
     public static String VALIDATE_CODE = "validateCode";
@@ -67,5 +69,5 @@ public class Consts {
     public static String ADMIN_ROLE_ID = properties.getProperty("ADMIN_ROLE_ID") != null ? properties.getProperty("ADMIN_ROLE_ID") : "9e47f1eb-aef3-42a8-b400-2c7d59d85db0";
     public static String ADMIN_ACCOUNT_DEFAULT = properties.getProperty("ADMIN_ACCOUNT_DEFAULT") != null ? properties.getProperty("ADMIN_ACCOUNT_DEFAULT") : "13110572081";
     public static String ADMIN_PASSWORD_DEFAULT = properties.getProperty("ADMIN_PASSWORD_DEFAULT") != null ? properties.getProperty("ADMIN_PASSWORD_DEFAULT") : "mxh19940822";
-    public static String EXCEL_FILE_PATH = properties.getProperty("EXCEL_FILE_PATH") != null ? properties.getProperty("EXCEL_FILE_PATH") : "staticfile/downloadfiles";
+    public static String EXCEL_FILE_PATH = properties.getProperty("EXCEL_FILE_PATH") != null ? properties.getProperty("EXCEL_FILE_PATH") : "static/";
 }
