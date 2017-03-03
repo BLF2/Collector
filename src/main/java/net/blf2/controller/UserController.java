@@ -110,7 +110,7 @@ public class UserController {
             throw new Exception();
         }
         if(findUserInfo != null){
-            httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE,"您的学号已经注册！！！");
+            httpSession.setAttribute(Consts.WEB_ERROR_MWSSAGE,"您的学号已经注册！！！,请登陆后更新！！！");
             return "error";
         }
         String userGradeTrs = userGradeNameValues.get(Integer.parseInt(userInfo.getUserGrade())) != null ? userGradeNameValues.get(Integer.parseInt(userInfo.getUserGrade())) : "default";
@@ -161,6 +161,8 @@ public class UserController {
                 }
             }
             scoreDetailMap.put(Consts.USER_SUM_SCORE, sum);
+            String classTrn = userGradeNameValues.get(Integer.parseInt(userInfo.getUserGrade().trim()));
+            userInfo.setUserGrade(classTrn != null ? classTrn : "default");
             userService.updateUserInfo(userInfo);
             userService.mongoUpdateClassMatesScoreDetail(scoreDetailMap);
             return this.redirectPage(userInfo,httpSession);

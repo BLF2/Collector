@@ -28,7 +28,7 @@
       var str = '<label>项目：</label> '+
               '<input type="text" class="form-control" name="'+itemsInfoListName+'"/>'+
               ' <label>加减分：（请用正负数表示）</label>'+
-              '<input type="number" class="form-control" name="'+itemsInfoListValue+'"/>'+
+              '<input type="text" class="form-control" name="'+itemsInfoListValue+'"/>'+
               '<button type="button" class="btn btn-danger" onclick="deleteNode('+"\'itemInfo"+index+'\')"'+'>删除此项</button>';
 
       var firstDiv = document.createElement("div");
